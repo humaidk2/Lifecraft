@@ -34,9 +34,9 @@ var urls = {
 
 module.exports = {
   poll: function() {
-    Pet.findOne({}).then(function(pet) {  
+    Pet.findOne({}).then(function(pet) {
     var name = pet.name;
-    var level = pet.level;    
+    var level = pet.level;
       switch (pet.status) {
         case 'coding':
           pet.experience++;
@@ -62,20 +62,26 @@ module.exports = {
           postLog(name, 'sleeping');
           break;
         default:
+          if (pet.feed > 0) {
           pet.feed--;
+          }
+          if (pet.health > 0) {
           pet.health--;
+          }
+          if (pet.love > 0) {
           pet.love--;
+          }
           break;
       }
       //if dead, run only this
-      if (pet.health < 0 || pet.feed < 0) {
+      if (pet.health <= 0 || pet.feed <= 0) {
         pet.status = 'dead';
         pet.phys = 'dead';
         pet.mood = 'dead';
         pet.img = urls['lvl' + level]['dead'];
         postLog(name, 'dead');
         return pet.save();
-      } 
+      }
       //check level before anything else
       if (pet.experience > 5) {
         pet.level = pet.level + 1;
@@ -132,6 +138,6 @@ module.exports = {
         pet.img = urls['lvl' + level]['normal'];
         return pet.save();
       }
-    }); 
+    });
   }
 }
