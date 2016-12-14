@@ -12,7 +12,7 @@ import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
 
 export default class NativeHR extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.getLog = this.getLog.bind(this);
     this.state = {
@@ -28,13 +28,13 @@ export default class NativeHR extends Component {
       love: 0,
       showNewName: false,
       cmdImg: {
-        food:'./assets/food1.png',
-        sleep:'./assets/sleep1.png',
-        love:'./assets/love1.png',
-        code:'./assets/code1.png'
+        food: './assets/food1.png',
+        sleep: './assets/sleep1.png',
+        love: './assets/love1.png',
+        code: './assets/code1.png'
       },
       logs: []
-    }
+    };
 
     var that = this;
     setInterval(function() {
@@ -54,34 +54,34 @@ export default class NativeHR extends Component {
     console.log('Fetching pet status...');
     var that = this;
 
-    fetch('http://10.6.19.22:3000/api/pet'  , {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('pet data', data);
-          that.setState({
-            name: data.name,
-            mood: data.mood,
-            level: data.level,
-            phys: data.phys,
-            img: data.img,
-            health: data.health,
-            experience: data.experience,
-            feed: data.feed,
-            status: data.status,
-            love: data.love,
-            showNewName: false,
-            newPetName: ''
-          });
-        })
-        .catch((error) => {
-          console.warn(error);
-        }).done();
+    fetch('http://10.6.19.22:3000/api/pet', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('pet data', data);
+      that.setState({
+        name: data.name,
+        mood: data.mood,
+        level: data.level,
+        phys: data.phys,
+        img: data.img,
+        health: data.health,
+        experience: data.experience,
+        feed: data.feed,
+        status: data.status,
+        love: data.love,
+        showNewName: false,
+        newPetName: ''
+      });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
 
   }
 
@@ -89,45 +89,45 @@ export default class NativeHR extends Component {
     console.log('Fetching log messages...');
     var that = this;
 
-    fetch('http://10.6.19.22:3000/log'  , {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          }
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('log data', data);
-          that.setState({
-            logs: data
-          });
-        })
-        .catch((error) => {
-          console.warn(error);
-        }).done();
+    fetch('http://10.6.19.22:3000/log', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('log data', data);
+      that.setState({
+        logs: data
+      });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
   }
 
   setStatus(status) {
     var that = this;
     console.log(status);
 
-        fetch('http://10.6.19.22:3000/api/pet'  , {
-          method: 'POST',
-          headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-          body: JSON.stringify({status: status})
-        })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log('clicked');
-          that.getCurrent();
-        })
-        .catch((error) => {
-          console.warn(error);
-        }).done();
+    fetch('http://10.6.19.22:3000/api/pet', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({status: status})
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('clicked');
+      that.getCurrent();
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
 
     // $.ajax({
     //   method: 'POST',
@@ -151,7 +151,7 @@ export default class NativeHR extends Component {
     this.setState(obj);
   }
 
-  showNameInput(){
+  showNameInput() {
     this.setState({
       showNewName: !this.showNewName
     });
@@ -171,48 +171,47 @@ export default class NativeHR extends Component {
       console.log('New pet created!');
       that.getCurrent();
     }).catch(function(error) {
-console.log('There has been a problem with your fetch operation: ' + error.message);
-  throw error;
-});
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+      throw error;
+    });
   }
 
 
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
-          food:'./assets/food2.png',
-          sleep:'./assets/sleep1.png',
-          love:'./assets/love1.png',
-          code:'./assets/code1.png'
-        }})
-        ;
+        food: './assets/food2.png',
+        sleep: './assets/sleep1.png',
+        love: './assets/love1.png',
+        code: './assets/code1.png'
+      }});
     } else if (command === 'sleeping') {
       this.setState({cmdImg: {
-          food:'./assets/food1.png',
-          sleep:'./assets/sleep2.png',
-          love:'./assets/love1.png',
-          code:'./assets/code1.png'
-        }});
+        food: './assets/food1.png',
+        sleep: './assets/sleep2.png',
+        love: './assets/love1.png',
+        code: './assets/code1.png'
+      }});
     } else if (command === 'coding') {
       this.setState({cmdImg: {
-          food:'./assets/food1.png',
-          sleep:'./assets/sleep1.png',
-          love:'./assets/love1.png',
-          code:'./assets/code2.png'
-        }});
+        food: './assets/food1.png',
+        sleep: './assets/sleep1.png',
+        love: './assets/love1.png',
+        code: './assets/code2.png'
+      }});
     } else if (command === 'playing') {
       this.setState({cmdImg: {
-          food:'./assets/food1.png',
-          sleep:'./assets/sleep1.png',
-          love:'./assets/love2.png',
-          code:'./assets/code1.png'
-        }});
+        food: './assets/food1.png',
+        sleep: './assets/sleep1.png',
+        love: './assets/love2.png',
+        code: './assets/code1.png'
+      }});
     }
   }
 
-  executeCommand(command){
+  executeCommand(command) {
     this.changeCommandIcon(command);
-    this.setStatus(command)
+    this.setStatus(command);
     this.getCurrent();
   }
 
@@ -223,10 +222,10 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
         <Image source={{uri: this.state.img}} style={styles.petGif}/>
         </View>
         <View style={styles.statusContainer}>
-        <Text>Hello {this.state.name} is currently {this.state.status}</Text>
+        <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
         </View>
         <View style={styles.statsContainer}>
-          <PetBox />
+          <PetBox pet={this.state}/>
         </View>
         <View style={styles.logContainer}>
           <StatusMessage logs={this.state.logs}/>
@@ -248,7 +247,15 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flex: 1,
-    backgroundColor: 'yellow',
+  },
+  statusMsg: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  statusText: {
+    color: 'red',
   },
   statsContainer: {
     flex: 3.5,
@@ -262,9 +269,9 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   petGif: {
-     width: Dimensions.get('window').width,
-     top: 0,
-     height: 226
+    width: Dimensions.get('window').width,
+    top: 0,
+    height: 226
   }
 
 });
