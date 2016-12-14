@@ -56,7 +56,7 @@ export default class NativeHR extends Component {
     console.log('Fetching pet status...');
     var that = this;
 
-    fetch('http://10.6.19.22:3000/api/pet', {
+    fetch('http://138.68.6.148:3000/api/pet', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -91,7 +91,7 @@ export default class NativeHR extends Component {
     console.log('Fetching log messages...');
     var that = this;
 
-    fetch('http://10.6.19.22:3000/log', {
+    fetch('http://138.68.6.148:3000/log', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -114,7 +114,7 @@ export default class NativeHR extends Component {
     var that = this;
     console.log(status);
 
-    fetch('http://10.6.19.22:3000/api/pet', {
+    fetch('http://138.68.6.148:3000/api/pet', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -133,7 +133,7 @@ export default class NativeHR extends Component {
 
     // $.ajax({
     //   method: 'POST',
-    //   url: 'http://10.6.19.22:3000/api/pet',
+    //   url: 'http://138.68.6.148:3000/api/pet',
     //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     //   data: {status: status}
     // })
@@ -163,7 +163,7 @@ export default class NativeHR extends Component {
     //e.preventDefault();
 
     var that = this;
-    fetch('http://10.6.19.22:3000/api/newPet', {
+    fetch('http://138.68.6.148:3000/api/newPet', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -181,7 +181,7 @@ export default class NativeHR extends Component {
     }).done();
     // $.ajax({
     //   method: 'POST',
-    //   url: 'http://10.6.19.22:3000/api/newPet',
+    //   url: 'http://138.68.6.148:3000/api/newPet',
     //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     //   data: {name: this.state.newPetName}
     // })
