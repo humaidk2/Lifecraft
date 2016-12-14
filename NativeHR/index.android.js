@@ -210,7 +210,7 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
           <PetBox />
         </View>
         <View style={styles.logContainer}>
-          <StatusMessage />
+          <StatusMessage logs={this.state.logs}/>
         </View>
         <View style={styles.actionContainer}>
           <Buttons />
@@ -241,7 +241,6 @@ const styles = StyleSheet.create({
   },
   logContainer: {
     flex: 2,
-    backgroundColor: 'lightskyblue',
     paddingLeft: 20
   },
   actionContainer: {
