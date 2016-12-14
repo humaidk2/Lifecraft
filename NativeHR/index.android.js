@@ -8,6 +8,8 @@ import {
   Dimensions
 } from 'react-native';
 import PetBox from './petBox.js';
+import Buttons from './buttons.js';
+import StatusMessage from './statusMessage.js';
 
 export default class NativeHR extends Component {
   constructor(props){
@@ -208,8 +210,10 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
           <PetBox />
         </View>
         <View style={styles.logContainer}>
+          <StatusMessage />
         </View>
         <View style={styles.actionContainer}>
+          <Buttons />
         </View>
       </View>
     );
@@ -230,24 +234,22 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flex: 3.5,
-    backgroundColor: 'green',
   },
   logContainer: {
     flex: 2,
-    backgroundColor: 'blue',
+    backgroundColor: 'lightskyblue',
+    paddingLeft: 20
   },
   actionContainer: {
     flex: 1.2,
-    backgroundColor: 'purple',
-  },petGif: {
+    paddingTop: 10,
+  },
+  petGif: {
      width: Dimensions.get('window').width,
      top: 0,
-     // bottom: 500,
-     // right: 0,
-     // left: 0,
-     height: 226,
-     // alignItems: 'flex-start',
-   },
+     height: 226
+  }
+
 });
 
 AppRegistry.registerComponent('NativeHR', () => NativeHR);
