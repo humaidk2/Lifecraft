@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     height: 226
   },
   infoContainer: {
-    backgroundColor: 'rgba(255,255,255,0.5)',
+    backgroundColor: 'rgba(0,0,0,0.5)',
   }
 
 });
