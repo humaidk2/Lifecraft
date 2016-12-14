@@ -11,6 +11,7 @@ import PetBox from './petBox.js';
 import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
 import Info from './info.js';
+import Restart from './restart.js';
 
 export default class NativeHR extends Component {
   constructor(props) {
@@ -144,9 +145,9 @@ export default class NativeHR extends Component {
     // });
   }
 
-  getInput(event) {
-    var key = event.target.getAttribute('class');
-    var value = event.target.value;
+  getInput(text) {
+    var key = 'newPetName';
+    var value = text;
     var obj = {};
     obj[key] = value;
     this.setState(obj);
@@ -159,22 +160,38 @@ export default class NativeHR extends Component {
   }
 
   newPet(e) {
-    e.preventDefault();
+    //e.preventDefault();
 
     var that = this;
-    $.ajax({
+    fetch('http://10.6.19.22:3000/api/newPet', {
       method: 'POST',
-      url: 'http://10.6.19.22:3000/api/newPet',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: {name: this.state.newPetName}
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name: that.state.newPetName})
     })
-    .success(function() {
-      console.log('New pet created!');
+    .then((response) => response)
+    .then((data) => {
+      console.log('clicked');
       that.getCurrent();
-    }).catch(function(error) {
-      console.log('There has been a problem with your fetch operation: ' + error.message);
-      throw error;
-    });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
+    // $.ajax({
+    //   method: 'POST',
+    //   url: 'http://10.6.19.22:3000/api/newPet',
+    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    //   data: {name: this.state.newPetName}
+    // })
+    // .success(function() {
+    //   console.log('New pet created!');
+    //   that.getCurrent();
+    // }).catch(function(error) {
+    //   console.log('There has been a problem with your fetch operation: ' + error.message);
+    //   throw error;
+    // });
   }
 
 
@@ -237,9 +254,11 @@ export default class NativeHR extends Component {
         <View style={styles.logContainer}>
           <StatusMessage logs={this.state.logs}/>
         </View>
-        <View style={styles.actionContainer}>
-          <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
-        </View>
+        <View style={styles.actionContainer}>{
+          this.state.status !== 'dead' ? (<View style={{flex: 1}}>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
+          </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
+        }</View>
       </View>
     );
   }
