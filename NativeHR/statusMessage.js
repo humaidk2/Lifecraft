@@ -10,7 +10,7 @@ import {
 const styles = StyleSheet.create({
   textStyle: {
     fontFamily: 'monospace',
-    fontSize: 18,
+    fontSize: 15,
   }
 });
 
