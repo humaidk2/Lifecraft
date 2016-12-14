@@ -28,10 +28,10 @@ export default class NativeHR extends Component {
       love: 0,
       showNewName: false,
       cmdImg: {
-        food: './assets/food1.png',
-        sleep: './assets/sleep1.png',
-        love: './assets/love1.png',
-        code: './assets/code1.png'
+        food:'food1',
+        sleep:'sleep1',
+        love:'love1',
+        code:'code1'
       },
       logs: []
     };
@@ -180,32 +180,34 @@ export default class NativeHR extends Component {
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
-        food: './assets/food2.png',
-        sleep: './assets/sleep1.png',
-        love: './assets/love1.png',
-        code: './assets/code1.png'
-      }});
+
+          food:'food2',
+          sleep:'sleep1',
+          love:'love1',
+          code:'code1'
+        }})
+        ;
     } else if (command === 'sleeping') {
       this.setState({cmdImg: {
-        food: './assets/food1.png',
-        sleep: './assets/sleep2.png',
-        love: './assets/love1.png',
-        code: './assets/code1.png'
-      }});
+          food:'food1',
+          sleep:'sleep2',
+          love:'love1',
+          code:'code1'
+        }});
     } else if (command === 'coding') {
       this.setState({cmdImg: {
-        food: './assets/food1.png',
-        sleep: './assets/sleep1.png',
-        love: './assets/love1.png',
-        code: './assets/code2.png'
-      }});
+          food:'food1',
+          sleep:'sleep1',
+          love:'love1',
+          code:'code2'
+        }});
     } else if (command === 'playing') {
       this.setState({cmdImg: {
-        food: './assets/food1.png',
-        sleep: './assets/sleep1.png',
-        love: './assets/love2.png',
-        code: './assets/code1.png'
-      }});
+          food:'food1',
+          sleep:'sleep1',
+          love:'love2',
+          code:'code1'
+        }});
     }
   }
 
