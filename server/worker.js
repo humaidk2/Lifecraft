@@ -3,27 +3,27 @@ var postLog = require('./controller').postLog;
 
 /********** Image Assets **********/
 var lvl1 = {
-  normal: "http://i.imgur.com/RzBy3Vw.gif",
-  runaway: "http://i.imgur.com/JfH45R0.jpg",
-  dead: "http://i.imgur.com/3tWT7qP.jpg",
-  sick: "http://i.imgur.com/CdIG2m2.gif",
-  happy: "http://i.imgur.com/jjUbQ6P.gif",
+  normal: "normal1",
+  runaway: "runaway1",
+  dead: "dead1",
+  sick: "sick1",
+  happy: "sick1",
 };
 
 var lvl2 = {
-  normal: 'http://i.giphy.com/3oriO8JJtEUpvOYm08.gif',
-  runaway: 'http://i.giphy.com/l0HlyXWFwaJ942luo.gif',
-  dead: 'http://i.giphy.com/3o6Ztqhekyhz1gsH0k.gif',
-  sick: 'http://i.giphy.com/l0MYrEAYrIRmqoDVS.gif',
-  happy: 'http://i.giphy.com/3o6ZtoD5DyQhBb9zTq.gif'
+  normal: "normal2",
+  runaway: "runaway2",
+  dead: "dead2",
+  sick: "sick2",
+  happy: "sick2",
 };
 
 var lvl3 = {
-  normal: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  runaway: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  dead: 'http://i.giphy.com/3o7TKTlTIDVc9ANOla.gif',
-  sick: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  happy: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif'
+  normal: "coding3",
+  runaway: "coding3",
+  dead: "dead3",
+  sick: "coding3",
+  happy: "coding3",
 };
 
 var urls = {
