@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import PetBox from './petBox.js';
 import Buttons from './buttons.js';
+import StatusMessage from './statusMessage.js';
 
 export default class NativeHR extends Component {
   render() {
@@ -22,6 +23,7 @@ export default class NativeHR extends Component {
           <PetBox />
         </View>
         <View style={styles.logContainer}>
+          <StatusMessage />
         </View>
         <View style={styles.actionContainer}>
           <Buttons />
@@ -49,9 +51,11 @@ const styles = StyleSheet.create({
   },
   logContainer: {
     flex: 2,
-    backgroundColor: 'blue',
+    backgroundColor: 'lightskyblue',
+    paddingLeft: 20
   },
   actionContainer: {
+    paddingTop: 10,
     flex: 1.2
   }
 });
