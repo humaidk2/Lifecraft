@@ -7,24 +7,24 @@ var moment = require('moment');
 
 /********** Image Assets **********/
 var lvl1 = {
-  coding: "http://i.imgur.com/KTNujjY.gif",
-  sleeping: "http://i.imgur.com/PujjsmB.gif",
-  playing: "http://i.imgur.com/T99KqDs.gif",
-  eating: "http://i.imgur.com/W8UQN1M.gif"
+  coding: "coding1",
+  sleeping: "sleeping1",
+  playing: "playing1",
+  eating: "eating1"
 };
 
 var lvl2 = {
-  coding: 'http://i.giphy.com/3oriO1ACIKLSY565q0.gif',
-  sleeping: 'http://i.giphy.com/l2JhIsdeKTn5IPQCQ.gif',
-  playing: 'http://i.giphy.com/3oriNVPP3ax7b6Ryg0.gif',
-  eating: 'http://i.giphy.com/l0MYBdxsQBG15bLTq.gif'
+  coding: "coding2",
+  sleeping: "sleeping2",
+  playing: "playing2",
+  eating: "eating2"
 };
 
 var lvl3 = {
-  coding: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  sleeping: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  playing: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif',
-  eating: 'http://i.giphy.com/3o7TKVhFwW3ZWiti8g.gif'
+  coding: "coding3",
+  sleeping: "coding3",
+  playing: "coding3",
+  eating: "coding3"
 };
 
 var urls = {
@@ -48,7 +48,7 @@ module.exports = {
       .then(function(pet) {
         if (pet) {
           var newStatus = req.body.status;
-          pet.status = newStatus; 
+          pet.status = newStatus;
           console.log('url', urls['lvl'+ pet.level][newStatus]);
           pet.img = urls['lvl'+ pet.level][newStatus];
           pet.save().then(function(data) {
@@ -102,7 +102,7 @@ module.exports = {
           console.log('Created new log.');
         });
       }
-    })       
+    })
   },
   /********** User Functions **********/
   login: function(req, res, next) {
@@ -164,7 +164,7 @@ module.exports = {
                 }
               })
             }
-          })          
+          })
         } else {
           console.log('Account already exists.');
           res.send(false);
