@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
   }
 });
 
-var StatusMessage = function(props) {
+var StatusMessage = (props) => {
   return (
     <ScrollView>
       <View className="status-message">

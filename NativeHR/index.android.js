@@ -10,6 +10,7 @@ import {
 import PetBox from './petBox.js';
 import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
+import Info from './info.js';
 
 export default class NativeHR extends Component {
   constructor(props) {
@@ -223,6 +224,9 @@ export default class NativeHR extends Component {
         <View style={styles.gifContainer}>
         <Image source={{uri: this.state.img}} style={styles.petGif}/>
         </View>
+        <View style={styles.infoContainer}>
+          <Info />
+        </View>
         <View style={styles.statusContainer}>
         <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
         </View>
@@ -274,6 +278,9 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     top: 0,
     height: 226
+  },
+  infoContainer: {
+
   }
 
 });
