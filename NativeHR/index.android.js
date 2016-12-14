@@ -10,6 +10,7 @@ import {
 import PetBox from './petBox.js';
 import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
+import Info from './info.js';
 
 export default class NativeHR extends Component {
   constructor(props) {
@@ -222,6 +223,9 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
         <View style={styles.gifContainer}>
         <Image source={{uri: this.state.img}} style={styles.petGif}/>
         </View>
+        <View style={styles.infoContainer}>
+          <Info />
+        </View>
         <View style={styles.statusContainer}>
         <Text>Hello {this.state.name} is currently {this.state.status}</Text>
         </View>
@@ -262,9 +266,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
   },
   petGif: {
-     width: Dimensions.get('window').width,
-     top: 0,
-     height: 226
+    width: Dimensions.get('window').width,
+    top: 0,
+    height: 226
+  },
+  infoContainer: {
+
   }
 
 });
