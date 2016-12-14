@@ -222,10 +222,11 @@ export default class NativeHR extends Component {
     return (
       <View style={styles.appContainer}>
         <View style={styles.gifContainer}>
-        <Image source={{uri: this.state.img}} style={styles.petGif}/>
-        </View>
-        <View style={styles.infoContainer}>
-          <Info />
+          <Image source={{uri: this.state.img}} style={styles.petGif}>
+            <View style={styles.infoContainer}>
+              <Info info={this.state}/>
+            </View>
+          </Image>
         </View>
         <View style={styles.statusContainer}>
         <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
@@ -280,7 +281,7 @@ const styles = StyleSheet.create({
     height: 226
   },
   infoContainer: {
-
+    backgroundColor: 'rgba(255,255,255,0.5)',
   }
 
 });
