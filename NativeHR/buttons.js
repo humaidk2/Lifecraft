@@ -11,24 +11,24 @@ import {
 
 module.exports = (props) => (
   <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'space-between', justifyContent: 'space-around'}}>
-    <TouchableHighlight onPress={() => {props.executeCommand('eating')}}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('eating'); } }>
     <View>
-      <Image source={require('./assets/food1.png')} style={{ width: 50, height: 50}} />
+      <Image source={{uri: props.cmdImg.food}} style={{ width: 50, height: 50}} />
       </View>
     </TouchableHighlight>
-    <TouchableHighlight onPress={() => {props.executeCommand('playing')}}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('playing'); }}>
     <View>
-    <Image source={require('./assets/love1.png')} style={{ width: 50, height: 50}} />
+    <Image source={{uri: props.cmdImg.love}} style={{ width: 50, height: 50}} />
     </View>
     </TouchableHighlight>
-    <TouchableHighlight onPress={() => {props.executeCommand('coding')}}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('coding'); }}>
     <View>
-    <Image source={require('./assets/code1.png')} style={{ width: 50, height: 50}}/>
+    <Image source={{uri: props.cmdImg.code}} style={{ width: 50, height: 50}}/>
     </View>
         </TouchableHighlight>
-    <TouchableHighlight onPress={() => {props.executeCommand('sleeping')}}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('sleeping'); }}>
     <View>
-    <Image source={require('./assets/sleep1.png')} style={{ width: 50, height: 50}}/>
+    <Image source={{uri: props.cmdImg.sleep}} style={{ width: 50, height: 50}}/>
   </View>
       </TouchableHighlight>
       </View>
