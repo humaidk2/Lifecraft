@@ -204,7 +204,7 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
         <Image source={{uri: 'http://i.imgur.com/KTNujjY.gif'}} style={styles.petGif}/>
         </View>
         <View style={styles.statusContainer}>
-        <Text>Hello {this.state.name} is currently {this.state.status}</Text>
+        <Text style={styles.statusText}>Hello {this.state.name} is currently {this.state.status}</Text>
         </View>
         <View style={styles.statsContainer}>
           <PetBox />
@@ -226,11 +226,15 @@ const styles = StyleSheet.create({
   },
   gifContainer: {
     flex: 4,
-    backgroundColor: 'red',
   },
   statusContainer: {
     flex: 1,
-    backgroundColor: 'yellow',
+  },
+  statusText: {
+    textAlign: 'center',
+    marginTop: 10,
+    fontWeight: 'bold',
+    fontSize: 28,
   },
   statsContainer: {
     flex: 3.5,
