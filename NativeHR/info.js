@@ -17,11 +17,13 @@ var Info = (props) => {
 
 const styles = StyleSheet.create({
   textStyle: {
-    fontSize: 15,
-    color: 'black'
+    fontSize: 20,
+    color: 'white'
   },
   containerStyle: {
-    width: 100
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    justifyContent: 'space-around'
   }
 });
 
