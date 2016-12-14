@@ -8,6 +8,7 @@ import {
   Dimensions
 } from 'react-native';
 import PetBox from './petBox.js';
+import Buttons from './buttons.js';
 
 export default class NativeHR extends Component {
   render() {
@@ -23,6 +24,7 @@ export default class NativeHR extends Component {
         <View style={styles.logContainer}>
         </View>
         <View style={styles.actionContainer}>
+          <Buttons />
         </View>
       </View>
     );
@@ -50,8 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'blue',
   },
   actionContainer: {
-    flex: 1.2,
-    backgroundColor: 'purple',
+    flex: 1.2
   }
 });
 
