@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flex: 3.5,
-    backgroundColor: 'green',
   },
   logContainer: {
     flex: 2,
