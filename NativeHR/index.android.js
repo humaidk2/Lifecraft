@@ -28,10 +28,10 @@ export default class NativeHR extends Component {
       love: 0,
       showNewName: false,
       cmdImg: {
-        food:'../assets/food1.png',
-        sleep:'../assets/sleep1.png',
-        love:'../assets/love1.png',
-        code:'../assets/code1.png'
+        food:'./assets/food1.png',
+        sleep:'./assets/sleep1.png',
+        love:'./assets/love1.png',
+        code:'./assets/code1.png'
       },
       logs: []
     }
@@ -110,18 +110,37 @@ export default class NativeHR extends Component {
 
   setStatus(status) {
     var that = this;
-    $.ajax({
-      method: 'POST',
-      url: 'http://10.6.19.22:3000/api/pet',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data: {status: status}
-    })
-    .success(function() {
-      console.log('Pet status updated!');
-      that.getCurrent();
-    }).catch(function(error) {
-      console.log(error);
-    });
+    console.log(status);
+
+        fetch('http://10.6.19.22:3000/api/pet'  , {
+          method: 'POST',
+          headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
+          body: JSON.stringify({status: status})
+        })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('clicked');
+          that.getCurrent();
+        })
+        .catch((error) => {
+          console.warn(error);
+        }).done();
+
+    // $.ajax({
+    //   method: 'POST',
+    //   url: 'http://10.6.19.22:3000/api/pet',
+    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+    //   data: {status: status}
+    // })
+    // .success(function() {
+    //   console.log('Pet status updated!');
+    //   that.getCurrent();
+    // }).catch(function(error) {
+    //   console.log(error);
+    // });
   }
 
   getInput(event) {
@@ -161,32 +180,32 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
-          food:'../assets/food2.png',
-          sleep:'../assets/sleep1.png',
-          love:'../assets/love1.png',
-          code:'../assets/code1.png'
+          food:'./assets/food2.png',
+          sleep:'./assets/sleep1.png',
+          love:'./assets/love1.png',
+          code:'./assets/code1.png'
         }})
         ;
     } else if (command === 'sleeping') {
       this.setState({cmdImg: {
-          food:'../assets/food1.png',
-          sleep:'../assets/sleep2.png',
-          love:'../assets/love1.png',
-          code:'../assets/code1.png'
+          food:'./assets/food1.png',
+          sleep:'./assets/sleep2.png',
+          love:'./assets/love1.png',
+          code:'./assets/code1.png'
         }});
     } else if (command === 'coding') {
       this.setState({cmdImg: {
-          food:'../assets/food1.png',
-          sleep:'../assets/sleep1.png',
-          love:'../assets/love1.png',
-          code:'../assets/code2.png'
+          food:'./assets/food1.png',
+          sleep:'./assets/sleep1.png',
+          love:'./assets/love1.png',
+          code:'./assets/code2.png'
         }});
     } else if (command === 'playing') {
       this.setState({cmdImg: {
-          food:'../assets/food1.png',
-          sleep:'../assets/sleep1.png',
-          love:'../assets/love2.png',
-          code:'../assets/code1.png'
+          food:'./assets/food1.png',
+          sleep:'./assets/sleep1.png',
+          love:'./assets/love2.png',
+          code:'./assets/code1.png'
         }});
     }
   }
@@ -201,19 +220,19 @@ console.log('There has been a problem with your fetch operation: ' + error.messa
     return (
       <View style={styles.appContainer}>
         <View style={styles.gifContainer}>
-        <Image source={{uri: 'http://i.imgur.com/KTNujjY.gif'}} style={styles.petGif}/>
+        <Image source={{uri: this.state.img}} style={styles.petGif}/>
         </View>
         <View style={styles.statusContainer}>
-        <Text style={styles.statusText}>Hello {this.state.name} is currently {this.state.status}</Text>
+        <Text>Hello {this.state.name} is currently {this.state.status}</Text>
         </View>
         <View style={styles.statsContainer}>
           <PetBox />
         </View>
         <View style={styles.logContainer}>
-          <StatusMessage />
+          <StatusMessage logs={this.state.logs}/>
         </View>
         <View style={styles.actionContainer}>
-          <Buttons />
+          <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
         </View>
       </View>
     );
@@ -229,12 +248,7 @@ const styles = StyleSheet.create({
   },
   statusContainer: {
     flex: 1,
-  },
-  statusText: {
-    textAlign: 'center',
-    marginTop: 10,
-    fontWeight: 'bold',
-    fontSize: 28,
+    backgroundColor: 'yellow',
   },
   statsContainer: {
     flex: 3.5,
