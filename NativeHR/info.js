@@ -5,6 +5,22 @@ import {
   StyleSheet,
 } from 'react-native';
 
+const styles = StyleSheet.create({
+  textStyle: {
+    fontSize: 18,
+    color: 'white',
+    textShadowColor: 'black',
+    textShadowOffset: {width: 1, height: 1},
+    textShadowRadius: 10
+  },
+  containerStyle: {
+    // flexDirection: 'row',
+    // justifyContent: 'space-between',
+    // justifyContent: 'space-around'
+    paddingLeft: 5
+  }
+});
+
 var Info = (props) => {
   return (
     <View style={styles.containerStyle}>
@@ -15,16 +31,5 @@ var Info = (props) => {
   );
 };
 
-const styles = StyleSheet.create({
-  textStyle: {
-    fontSize: 20,
-    color: 'white'
-  },
-  containerStyle: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    justifyContent: 'space-around'
-  }
-});
 
 module.exports = Info;
