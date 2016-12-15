@@ -199,6 +199,7 @@ export default class NativeHR extends Component {
     .then((response) => response.json())
     .then((data) => {
       that.setState({
+        isQuestion: !this.state.isQuestion,
         question: data.results[0].question,
         answer: data.results[0].correct_answer,
         choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
@@ -220,11 +221,6 @@ export default class NativeHR extends Component {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
-  setQuestion() {
-    this.setState({
-      isQuestion: !this.state.isQuestion, 
-    });
-  }
 
   checkAnswer() {
     console.log('I CLICKED ON AN ANSWER WOOOOO');
@@ -288,6 +284,11 @@ export default class NativeHR extends Component {
       }});
     }
   }
+  checkAnswer(e) {
+    this.setState({
+      correctAnswer: this.state.answer === e.nativeEvent.text
+    });
+  }
 
   executeCommand(command) {
     this.changeCommandIcon(command);
@@ -332,7 +333,7 @@ export default class NativeHR extends Component {
           </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
-            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} setQuestion={this.setQuestion.bind(this)} getQuestion={this.getQuestion.bind(this)}/>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} getQuestion={this.getQuestion .bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
       </View>
