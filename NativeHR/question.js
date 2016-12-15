@@ -54,7 +54,7 @@ var Question = (props) => {
         <Text style={styles.question}>{props.question}</Text>
       </View>
       <View style={styles.choicesContainer}>
-        {props.choices.map((choice, index) => (<TouchableHighlight onPress={props.checkAnswer.bind(this, choice)} underlayColor={'rgb(250, 140, 140)'} style={styles.choiceContainer}><Text onPress={props.checkAnswer.bind(this, choice)} style={styles.choices} key={'' + index}>{choice}</Text></TouchableHighlight>))}
+        {props.choices.map((choice, index) => (<TouchableHighlight key={index + ''} onPress={props.checkAnswer.bind(this, choice)} underlayColor={'rgb(250, 140, 140)'} style={styles.choiceContainer}><Text onPress={props.checkAnswer.bind(this, choice)} style={styles.choices} key={'' + index}>{choice}</Text></TouchableHighlight>))}
       </View>
     </View>
   );
