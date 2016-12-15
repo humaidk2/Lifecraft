@@ -12,6 +12,54 @@ import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
 import Info from './info.js';
 import Restart from './restart.js';
+import Question from './question.js';
+
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+  },
+  questionContainer: {
+    flex: 10.5,
+  },
+  questionOverlay: {
+    flex: 1,
+  },
+  gifContainer: {
+    flex: 4,
+  },
+  statusContainer: {
+    flex: 1,
+  },
+  statusMsg: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  statusText: {
+    color: 'red',
+  },
+  statsContainer: {
+    flex: 3.5,
+  },
+  logContainer: {
+    flex: 2,
+    paddingLeft: 20
+  },
+  actionContainer: {
+    flex: 1.2,
+    paddingTop: 10,
+  },
+  petGif: {
+    width: Dimensions.get('window').width,
+    top: 0,
+    height: 226
+  },
+  infoContainer: {
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+  }
+
+});
 
 export default class NativeHR extends Component {
   constructor(props) {
@@ -29,11 +77,15 @@ export default class NativeHR extends Component {
       feed: 0,
       love: 0,
       showNewName: false,
+      isQuestion: false,
+      question: null,
+      answer: null,
+      choices: [],
       cmdImg: {
-        food:'food1',
-        sleep:'sleep1',
-        love:'love1',
-        code:'code1'
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code1'
       },
       logs: []
     };
@@ -84,7 +136,6 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-
   }
 
   getLog() {
@@ -130,19 +181,6 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-
-    // $.ajax({
-    //   method: 'POST',
-    //   url: 'http://138.68.6.148:3000/api/pet',
-    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //   data: {status: status}
-    // })
-    // .success(function() {
-    //   console.log('Pet status updated!');
-    //   that.getCurrent();
-    // }).catch(function(error) {
-    //   console.log(error);
-    // });
   }
 
   getInput(text) {
@@ -153,6 +191,31 @@ export default class NativeHR extends Component {
     this.setState(obj);
   }
 
+  getQuestion() {
+    var that = this;
+    fetch('https://www.opentdb.com/api.php?amount=1&type=multiple', {
+      method: 'GET',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('QUESTION DATA IS: ', data, typeof data);
+      that.setState({
+        question: data.results[0].question,
+        answer: data.results[0].correct_answer,
+        choices: data.results[0].incorrect_answers,
+      });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
+  }
+
+  setQuestion() {
+    this.setState({
+      isQuestion: !this.state.isQuestion, 
+    });
+  }
+
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -160,8 +223,6 @@ export default class NativeHR extends Component {
   }
 
   newPet(e) {
-    //e.preventDefault();
-
     var that = this;
     fetch('http://138.68.6.148:3000/api/newPet', {
       method: 'POST',
@@ -179,53 +240,38 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-    // $.ajax({
-    //   method: 'POST',
-    //   url: 'http://138.68.6.148:3000/api/newPet',
-    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //   data: {name: this.state.newPetName}
-    // })
-    // .success(function() {
-    //   console.log('New pet created!');
-    //   that.getCurrent();
-    // }).catch(function(error) {
-    //   console.log('There has been a problem with your fetch operation: ' + error.message);
-    //   throw error;
-    // });
   }
 
 
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
-
-          food:'food2',
-          sleep:'sleep1',
-          love:'love1',
-          code:'code1'
-        }})
-        ;
+        food: 'food2',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code1'
+      }});
     } else if (command === 'sleeping') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep2',
-          love:'love1',
-          code:'code1'
-        }});
+        food: 'food1',
+        sleep: 'sleep2',
+        love: 'love1',
+        code: 'code1'
+      }});
     } else if (command === 'coding') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep1',
-          love:'love1',
-          code:'code2'
-        }});
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code2'
+      }});
     } else if (command === 'playing') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep1',
-          love:'love2',
-          code:'code1'
-        }});
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love2',
+        code: 'code1'
+      }});
     }
   }
 
@@ -238,71 +284,34 @@ export default class NativeHR extends Component {
   render() {
     return (
       <View style={styles.appContainer}>
-        <View style={styles.gifContainer}>
-          <Image source={{uri: this.state.img}} style={styles.petGif}>
-            <View style={styles.infoContainer}>
-              <Info info={this.state}/>
+        <View style={styles.questionContainer}>{ !this.state.isQuestion ? (
+          <View className='questionOverlay' style={styles.questionOverlay}>
+            <View style={styles.gifContainer}>
+              <Image source={{uri: this.state.img}} style={styles.petGif}>
+                <View style={styles.infoContainer}>
+                  <Info info={this.state}/>
+                </View>
+              </Image>
             </View>
-          </Image>
-        </View>
-        <View style={styles.statusContainer}>
-        <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
-        </View>
-        <View style={styles.statsContainer}>
-          <PetBox pet={this.state}/>
-        </View>
-        <View style={styles.logContainer}>
-          <StatusMessage logs={this.state.logs}/>
-        </View>
+            <View style={styles.statusContainer}>
+              <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
+            </View>
+            <View style={styles.statsContainer}>
+              <PetBox pet={this.state}/>
+            </View>
+            <View style={styles.logContainer}>
+              <StatusMessage logs={this.state.logs}/>
+            </View>
+          </View>) : <Question question={this.state.question} answer={this.state.answer} choices={this.state.choices}/>}
+          </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
-            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} setQuestion={this.setQuestion.bind(this)} getQuestion={this.getQuestion.bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-  },
-  gifContainer: {
-    flex: 4,
-  },
-  statusContainer: {
-    flex: 1,
-  },
-  statusMsg: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 20,
-    textAlign: 'center',
-  },
-  statusText: {
-    color: 'red',
-  },
-  statsContainer: {
-    flex: 3.5,
-  },
-  logContainer: {
-    flex: 2,
-    paddingLeft: 20
-  },
-  actionContainer: {
-    flex: 1.2,
-    paddingTop: 10,
-  },
-  petGif: {
-    width: Dimensions.get('window').width,
-    top: 0,
-    height: 226
-  },
-  infoContainer: {
-    // backgroundColor: 'rgba(0,0,0,0.5)',
-  }
-
-});
 
 AppRegistry.registerComponent('NativeHR', () => NativeHR);
