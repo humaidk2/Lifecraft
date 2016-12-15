@@ -366,8 +366,11 @@ export default class NativeHR extends Component {
   checkAnswer(choice) {
     if (choice === this.state.answer) {
       this.setState({
-        correctAnswer: this.state.answer === choice
+        isQuestion: !this.state.isQuestion
       });
+      var sleeping = {'status': 'coding'};
+      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
+
     }   
   }
 
