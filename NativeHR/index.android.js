@@ -147,8 +147,8 @@ export default class NativeHR extends Component {
         window.sensorHandler(dead, 'http://138.68.6.148:3000/api/newPet', name);
       }
     });
-    mSensorManager.startAccelerometer(100);
-    mSensorManager.startLightSensor(100);
+    // mSensorManager.startAccelerometer(100);
+    // mSensorManager.startLightSensor(100);
   }
 
   componentWillMount() {
@@ -212,7 +212,6 @@ export default class NativeHR extends Component {
     }).done();
   }
 
-
   getInput(text) {
     var key = 'newPetName';
     var value = text;
@@ -262,17 +261,6 @@ export default class NativeHR extends Component {
     }).done();
   }
 
-  escapeHtml(text) {
-    var map = {
-      '&': 'amp;',
-      '<': 'lt;',
-      '>': 'gt;',
-      '"': 'quot;',
-      "'": '#039;'
-    };
-    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-  }
-
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -298,7 +286,6 @@ export default class NativeHR extends Component {
       console.warn(error);
     }).done();
   }
-
 
   changeCommandIcon (command) {
     if (command === 'eating') {
@@ -358,7 +345,6 @@ export default class NativeHR extends Component {
     }
     return arr;
   }
-
 
   render() {
     var color = this.state.light.interpolate({
