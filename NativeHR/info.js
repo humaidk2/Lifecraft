@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
     textShadowRadius: 10
   },
   containerStyle: {
-    // flexDirection: 'row',
-    // justifyContent: 'space-between',
-    // justifyContent: 'space-around'
     paddingLeft: 5
   }
 });
