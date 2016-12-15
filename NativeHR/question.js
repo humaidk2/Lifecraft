@@ -15,10 +15,8 @@ var Question = (props) => {
   return (
     <View>
       <Text>{props.question}</Text>
+      {props.choices.map((choice,index) => (<Text key={'' + index}>{choice}</Text>))}
       <Text>{props.answer}</Text>
-      <Text>{props.choices[0]}</Text>
-      <Text>{props.choices[1]}</Text>
-      <Text>{props.choices[2]}</Text>
     </View>
   );
 };
