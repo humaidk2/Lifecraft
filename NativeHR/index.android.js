@@ -57,11 +57,7 @@ const styles = StyleSheet.create({
     width: Dimensions.get('window').width,
     top: 0,
     height: 226
-  },
-  infoContainer: {
-    // backgroundColor: 'rgba(0,0,0,0.5)',
   }
-
 });
 
 var mSensorManager = require('NativeModules').SensorManager;
@@ -107,56 +103,29 @@ export default class NativeHR extends Component {
       }
     }, 2000);
 
-    // setInterval(function() {
-    //   if (that.state.isDarkcounter > 2) {
-    //     that.state.isDarkcounter = 0;
-    //   }
-    // }, 13000);
-
     window.sensorHandler = (status, link, obj) => {
       console.log('status', this.state.status);
       if (status) {
         fetch(link, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-          })
-          .then((response) => response)
-          .then((data) => {
-            that.getCurrent();
-          })
-          .catch((error) => {
-            console.warn(error);
-          }).done();
-        }
-      };
-
-      // console.log('status', this.state.status);
-      // if (this.state.status === 'dead') {
-      //   fetch('http://138.68.6.148:3000/api/newPet', {
-      //       method: 'POST',
-      //       headers: {
-      //         'Accept': 'application/json',
-      //         'Content-Type': 'application/json',
-      //       },
-      //       body: JSON.stringify({name: this.state.name})
-      //     })
-      //     .then((response) => response)
-      //     .then((data) => {
-      //       that.getCurrent();
-      //     })
-      //     .catch((error) => {
-      //       console.warn(error);
-      //     }).done();
-      //   }
-      // };
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(obj)
+        })
+        .then((response) => response)
+        .then((data) => {
+          that.getCurrent();
+        })
+        .catch((error) => {
+          console.warn(error);
+        }).done();
+      }
+    };
   }
 
   componentDidMount() {
-
     var that = this;
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
@@ -173,7 +142,6 @@ export default class NativeHR extends Component {
     });
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
       if (data.x > 30) {
-        // console.log(data.x);
         var name = {'name': that.state.name};
         var dead = (that.state.status === 'dead');
         window.sensorHandler(dead, 'http://138.68.6.148:3000/api/newPet', name);
@@ -189,7 +157,6 @@ export default class NativeHR extends Component {
   }
 
   getCurrent() {
-    //console.log('Fetching pet status...');
     var that = this;
 
     fetch('http://138.68.6.148:3000/api/pet', {
@@ -245,27 +212,6 @@ export default class NativeHR extends Component {
     }).done();
   }
 
-  setStatus(status) {
-    var that = this;
-    console.log(status);
-
-    fetch('http://138.68.6.148:3000/api/pet', {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({status: status})
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('clicked');
-      that.getCurrent();
-    })
-    .catch((error) => {
-      console.warn(error);
-    }).done();
-  }
 
   getInput(text) {
     var key = 'newPetName';
@@ -288,6 +234,28 @@ export default class NativeHR extends Component {
         answer: data.results[0].correct_answer,
         choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
       });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
+  }
+
+  setStatus(status) {
+    var that = this;
+    console.log(status);
+
+    fetch('http://138.68.6.148:3000/api/pet', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({status: status})
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('clicked');
+      that.getCurrent();
     })
     .catch((error) => {
       console.warn(error);
@@ -363,6 +331,7 @@ export default class NativeHR extends Component {
       }});
     }
   }
+
   checkAnswer(choice) {
     if (choice === this.state.answer) {
       this.setState({
@@ -370,7 +339,6 @@ export default class NativeHR extends Component {
       });
       var sleeping = {'status': 'coding'};
       window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
-
     }   
   }
 
