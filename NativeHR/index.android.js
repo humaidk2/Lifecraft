@@ -226,6 +226,10 @@ export default class NativeHR extends Component {
     });
   }
 
+  checkAnswer() {
+    console.log('I CLICKED ON AN ANSWER WOOOOO');
+  }
+
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -293,7 +297,7 @@ export default class NativeHR extends Component {
 
   randomizer(arr, answer) {
     arr.push(answer);
-    for(var i = 0; i < arr.length; i++) {
+    for (var i = 0; i < arr.length; i++) {
       var temp = Math.floor(Math.random() * arr.length);
       var swap = arr[temp];
       arr[temp] = arr[i];
@@ -324,7 +328,7 @@ export default class NativeHR extends Component {
             <View style={styles.logContainer}>
               <StatusMessage logs={this.state.logs}/>
             </View>
-          </View>) : <Question question={this.state.question} answer={this.state.answer} choices={this.state.choices}/>}
+          </View>) : <Question question={this.state.question} answer={this.state.answer} checkAnswer={this.checkAnswer.bind(this)} choices={this.state.choices}/>}
           </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
