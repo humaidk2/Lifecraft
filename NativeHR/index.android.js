@@ -198,7 +198,6 @@ export default class NativeHR extends Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      console.log('QUESTION DATA IS: ', data, typeof data);
       that.setState({
         question: data.results[0].question,
         answer: data.results[0].correct_answer,
@@ -208,6 +207,17 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
+  }
+
+  escapeHtml(text) {
+    var map = {
+      '&': 'amp;',
+      '<': 'lt;',
+      '>': 'gt;',
+      '"': 'quot;',
+      "'": '#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
   setQuestion() {
