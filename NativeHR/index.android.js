@@ -60,31 +60,50 @@ export default class NativeHR extends Component {
     //   }
     // }, 13000);
 
-    // window.addLight = () => {
-    //   console.log('addLight is runnin', this.state.isDarkCounter);
-    //   if (this.state.isDarkCounter <= 2) {
-    //   fetch('http://138.68.6.148:3000/api/pet', {
-    //       method: 'POST',
-    //       headers: {
-    //         'Accept': 'application/json',
-    //         'Content-Type': 'application/json',
-    //       },
-    //       body: JSON.stringify({status: 'sleeping'})
-    //     })
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       console.log('clicked');
-    //       that.getCurrent();
-    //     })
-    //     .catch((error) => {
-    //       console.warn(error);
-    //     }).done();
-    //     this.state.isDarkCounter++;
-    //   }
-    // };
+    window.sensorHandler = (status, link, obj) => {
+      console.log('status', this.state.status);
+      if (status) {
+        fetch(link, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(obj)
+          })
+          .then((response) => response)
+          .then((data) => {
+            that.getCurrent();
+          })
+          .catch((error) => {
+            console.warn(error);
+          }).done();
+        }
+      };
+
+      // console.log('status', this.state.status);
+      // if (this.state.status === 'dead') {
+      //   fetch('http://138.68.6.148:3000/api/newPet', {
+      //       method: 'POST',
+      //       headers: {
+      //         'Accept': 'application/json',
+      //         'Content-Type': 'application/json',
+      //       },
+      //       body: JSON.stringify({name: this.state.name})
+      //     })
+      //     .then((response) => response)
+      //     .then((data) => {
+      //       that.getCurrent();
+      //     })
+      //     .catch((error) => {
+      //       console.warn(error);
+      //     }).done();
+      //   }
+      // };
   }
 
   componentDidMount() {
+
     var that = this;
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
@@ -93,10 +112,18 @@ export default class NativeHR extends Component {
           toValue: data.light
         }
       ).start();
+      if (data.light <= 5) {
+        var sleeping = {'status': 'sleeping'};
+        var awake = (that.state.status !== 'sleeping' && that.state.status !== 'dead');
+        window.sensorHandler(awake, 'http://138.68.6.148:3000/api/pet', sleeping);
+      }
     });
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
       if (data.x > 30) {
-        console.log(data.x); 
+        // console.log(data.x);
+        var name = {'name': that.state.name};
+        var dead = (that.state.status === 'dead');
+        window.sensorHandler(dead, 'http://138.68.6.148:3000/api/newPet', name);
       }
     });
     mSensorManager.startAccelerometer(100);
@@ -293,12 +320,12 @@ export default class NativeHR extends Component {
 
   render() {
     var color = this.state.light.interpolate({
-      inputRange: [0, 10],
+      inputRange: [0, 40],
       outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']
     });
 
     return (
-      <Animated.View style={[styles.appContainer, {backgroundColor: color}]}>
+      <Animated.View style={[styles.appContainer, {backgroundColor: 'white'}]}>
         <View style={styles.gifContainer}>
           <Image source={{uri: this.state.img}} style={styles.petGif}>
             <View style={styles.infoContainer}>
