@@ -52,13 +52,7 @@ var Question = (props) => {
         <Text style={styles.question}>{props.question}</Text>
       </View>
       <View style={styles.choicesContainer} justifyContent='space-between' justifyContent='space-around'>
-        <Text style={styles.choices}>{props.answer}</Text>
-        <Text style={styles.choices}>{props.choices[0]}</Text>
-        <Text style={styles.choices}>{props.choices[1]}</Text>
-        <Text style={styles.choices}>{props.choices[2]}</Text>
-        <Text style={styles.choices}>{props.question}</Text>
-          {props.choices.map((choice,index) => (<Text style={styles.choices} key={'' + index}>{choice}</Text>))}
-        <Text style={styles.choices}>{props.answer}</Text>
+        {props.choices.map((choice,index) => (<Text style={styles.choices} key={'' + index}>{choice}</Text>))}
       </View>
     </View>
   );
