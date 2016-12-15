@@ -427,46 +427,4 @@ export default class NativeHR extends Component {
   }
 }
 
-const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.8)'
-  },
-  gifContainer: {
-    flex: 4,
-  },
-  statusContainer: {
-    flex: 1,
-  },
-  statusMsg: {
-    fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 20,
-    textAlign: 'center',
-  },
-  statusText: {
-    color: 'red',
-  },
-  statsContainer: {
-    flex: 3.5,
-  },
-  logContainer: {
-    flex: 2,
-    paddingLeft: 20
-  },
-  actionContainer: {
-    flex: 1.2,
-    paddingTop: 10,
-  },
-  petGif: {
-    width: Dimensions.get('window').width,
-    top: 0,
-    height: 226
-  },
-  infoContainer: {
-    // backgroundColor: 'rgba(0,0,0,0.5)',
-  }
-
-});
-
 AppRegistry.registerComponent('NativeHR', () => NativeHR);
