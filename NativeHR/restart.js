@@ -13,12 +13,12 @@ import {
 
 module.exports = (props) => (
 
-  <View>
-    <View>
-      <TextInput style={{width: 100}} className='newPetName'  onChangeText={(text) => props.getInput(text)} />
-      <Button title="MakeNewPet" onPress={props.newPet} />
+  <View style={styles.buttonsContainer}>
+  +    <TextInput style={styles.inputContainer} placeholder='Enter new pet name!' className='newPetName' onChangeText={(text) => props.getInput(text)} />
+  +    <View style={styles.restartButton}>
+  +      <Button title="Restart" onPress={props.newPet} />
+      </View>
     </View>
-  </View>
 );
 
 const styles = StyleSheet.create({
