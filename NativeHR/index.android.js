@@ -280,6 +280,11 @@ export default class NativeHR extends Component {
       }});
     }
   }
+  checkAnswer(e) {
+    this.setState({
+      correctAnswer: this.state.answer === e.nativeEvent.text
+    });
+  }
 
   executeCommand(command) {
     this.changeCommandIcon(command);
