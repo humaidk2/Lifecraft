@@ -15,6 +15,54 @@ import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
 import Info from './info.js';
 import Restart from './restart.js';
+import Question from './question.js';
+
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+  },
+  questionContainer: {
+    flex: 10.5,
+  },
+  questionOverlay: {
+    flex: 1,
+  },
+  gifContainer: {
+    flex: 4,
+  },
+  statusContainer: {
+    flex: 1,
+  },
+  statusMsg: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  statusText: {
+    color: 'red',
+  },
+  statsContainer: {
+    flex: 3.5,
+  },
+  logContainer: {
+    flex: 2,
+    paddingLeft: 20
+  },
+  actionContainer: {
+    flex: 1.2,
+    paddingTop: 10,
+  },
+  petGif: {
+    width: Dimensions.get('window').width,
+    top: 0,
+    height: 226
+  },
+  infoContainer: {
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+  }
+
+});
 
 var mSensorManager = require('NativeModules').SensorManager;
 
@@ -36,11 +84,15 @@ export default class NativeHR extends Component {
       showNewName: false,
       isDark: false,
       isDarkCounter: 0,
+      isQuestion: false,
+      question: null,
+      answer: null,
+      choices: [],
       cmdImg: {
-        food:'food1',
-        sleep:'sleep1',
-        love:'love1',
-        code:'code1'
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code1'
       },
       logs: [],
       light: new Animated.Value(0)
@@ -167,7 +219,6 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-
   }
 
   getLog() {
@@ -213,19 +264,6 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-
-    // $.ajax({
-    //   method: 'POST',
-    //   url: 'http://138.68.6.148:3000/api/pet',
-    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //   data: {status: status}
-    // })
-    // .success(function() {
-    //   console.log('Pet status updated!');
-    //   that.getCurrent();
-    // }).catch(function(error) {
-    //   console.log(error);
-    // });
   }
 
   getInput(text) {
@@ -236,6 +274,41 @@ export default class NativeHR extends Component {
     this.setState(obj);
   }
 
+  getQuestion() {
+    var that = this;
+    fetch('https://www.opentdb.com/api.php?amount=1&type=multiple', {
+      method: 'GET',
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      that.setState({
+        isQuestion: !this.state.isQuestion,
+        question: data.results[0].question,
+        answer: data.results[0].correct_answer,
+        choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
+      });
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
+  }
+
+  escapeHtml(text) {
+    var map = {
+      '&': 'amp;',
+      '<': 'lt;',
+      '>': 'gt;',
+      '"': 'quot;',
+      "'": '#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+  }
+
+
+  checkAnswer() {
+    console.log('I CLICKED ON AN ANSWER WOOOOO');
+  }
+
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -243,8 +316,6 @@ export default class NativeHR extends Component {
   }
 
   newPet(e) {
-    //e.preventDefault();
-
     var that = this;
     fetch('http://138.68.6.148:3000/api/newPet', {
       method: 'POST',
@@ -262,54 +333,44 @@ export default class NativeHR extends Component {
     .catch((error) => {
       console.warn(error);
     }).done();
-    // $.ajax({
-    //   method: 'POST',
-    //   url: 'http://138.68.6.148:3000/api/newPet',
-    //   headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-    //   data: {name: this.state.newPetName}
-    // })
-    // .success(function() {
-    //   console.log('New pet created!');
-    //   that.getCurrent();
-    // }).catch(function(error) {
-    //   console.log('There has been a problem with your fetch operation: ' + error.message);
-    //   throw error;
-    // });
   }
 
 
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
-
-          food:'food2',
-          sleep:'sleep1',
-          love:'love1',
-          code:'code1'
-        }})
-        ;
+        food: 'food2',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code1'
+      }});
     } else if (command === 'sleeping') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep2',
-          love:'love1',
-          code:'code1'
-        }});
+        food: 'food1',
+        sleep: 'sleep2',
+        love: 'love1',
+        code: 'code1'
+      }});
     } else if (command === 'coding') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep1',
-          love:'love1',
-          code:'code2'
-        }});
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love1',
+        code: 'code2'
+      }});
     } else if (command === 'playing') {
       this.setState({cmdImg: {
-          food:'food1',
-          sleep:'sleep1',
-          love:'love2',
-          code:'code1'
-        }});
+        food: 'food1',
+        sleep: 'sleep1',
+        love: 'love2',
+        code: 'code1'
+      }});
     }
+  }
+  checkAnswer(e) {
+    this.setState({
+      correctAnswer: this.state.answer === e.nativeEvent.text
+    });
   }
 
   executeCommand(command) {
@@ -317,6 +378,18 @@ export default class NativeHR extends Component {
     this.setStatus(command);
     this.getCurrent();
   }
+
+  randomizer(arr, answer) {
+    arr.push(answer);
+    for (var i = 0; i < arr.length; i++) {
+      var temp = Math.floor(Math.random() * arr.length);
+      var swap = arr[temp];
+      arr[temp] = arr[i];
+      arr[i] = swap;
+    }
+    return arr;
+  }
+
 
   render() {
     var color = this.state.light.interpolate({
@@ -326,25 +399,29 @@ export default class NativeHR extends Component {
 
     return (
       <Animated.View style={[styles.appContainer, {backgroundColor: 'white'}]}>
-        <View style={styles.gifContainer}>
-          <Image source={{uri: this.state.img}} style={styles.petGif}>
-            <View style={styles.infoContainer}>
-              <Info info={this.state}/>
+        <View style={styles.questionContainer}>{ !this.state.isQuestion ? (
+          <View className='questionOverlay' style={styles.questionOverlay}>
+            <View style={styles.gifContainer}>
+              <Image source={{uri: this.state.img}} style={styles.petGif}>
+                <View style={styles.infoContainer}>
+                  <Info info={this.state}/>
+                </View>
+              </Image>
             </View>
-          </Image>
-        </View>
-        <View style={styles.statusContainer}>
-        <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
-        </View>
-        <View style={styles.statsContainer}>
-          <PetBox pet={this.state}/>
-        </View>
-        <View style={styles.logContainer}>
-          <StatusMessage logs={this.state.logs}/>
-        </View>
+            <View style={styles.statusContainer}>
+              <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
+            </View>
+            <View style={styles.statsContainer}>
+              <PetBox pet={this.state}/>
+            </View>
+            <View style={styles.logContainer}>
+              <StatusMessage logs={this.state.logs}/>
+            </View>
+          </View>) : <Question question={this.state.question} answer={this.state.answer} checkAnswer={this.checkAnswer.bind(this)} choices={this.state.choices}/>}
+          </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
-            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} getQuestion={this.getQuestion .bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
       </Animated.View>
