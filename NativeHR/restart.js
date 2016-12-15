@@ -14,7 +14,7 @@ import {
 module.exports = (props) => (
 
   <View style={styles.buttonsContainer}>
-     <TextInput style={styles.inputContainer} placeholder='Enter new pet name!' className='newPetName' onChangeText={(text) => props.getInput(text)} />
+     <TextInput style={styles.inputContainer} onSubmitEditing={props.newPet} placeholder='Enter new pet name!' className='newPetName' onChangeText={(text) => props.getInput(text)} />
      <View style={styles.restartButton}>
        <Button title="Restart" onPress={props.newPet} />
      </View>
