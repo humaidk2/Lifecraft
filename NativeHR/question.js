@@ -3,6 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
+  TouchableHighlight,
 } from 'react-native';
 
 const styles = StyleSheet.create({
@@ -31,28 +32,29 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderStyle: 'solid',
   },
-  choices: {
+  choiceContainer: {
+    flex: 1,
     backgroundColor: 'rgb(255, 250, 125)',
-    color: 'black',
-    textAlign: 'center',
-    fontSize: 30,
-    marginRight: 5,
-    marginLeft: 5,
+    margin: 10,
     borderWidth: 3,
     borderRadius: 20,
     borderStyle: 'solid',
+  },
+  choices: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize: 30,
   },
 });
 
 var Question = (props) => {
   return (
-
     <View style={styles.overlayContainer}>
       <View style={styles.questionContainer}>
         <Text style={styles.question}>{props.question}</Text>
       </View>
-      <View style={styles.choicesContainer} justifyContent='space-between' justifyContent='space-around'>
-        {props.choices.map((choice,index) => (<Text style={styles.choices} key={'' + index}>{choice}</Text>))}
+      <View style={styles.choicesContainer}>
+        {props.choices.map((choice, index) => (<TouchableHighlight onPress={props.checkAnswer} underlayColor={'rgb(250, 140, 140)'} style={styles.choiceContainer}><Text style={styles.choices} key={'' + index}>{choice}</Text></TouchableHighlight>))}
       </View>
     </View>
   );
