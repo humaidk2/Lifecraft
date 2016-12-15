@@ -81,6 +81,7 @@ export default class NativeHR extends Component {
       question: null,
       answer: null,
       choices: [],
+      correctAnswer: false,
       cmdImg: {
         food: 'food1',
         sleep: 'sleep1',
@@ -221,11 +222,6 @@ export default class NativeHR extends Component {
     return text.replace(/[&<>"']/g, function(m) { return map[m]; });
   }
 
-
-  checkAnswer() {
-    console.log('I CLICKED ON AN ANSWER WOOOOO');
-  }
-
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -284,10 +280,12 @@ export default class NativeHR extends Component {
       }});
     }
   }
-  checkAnswer(e) {
-    this.setState({
-      correctAnswer: this.state.answer === e.nativeEvent.text
-    });
+  checkAnswer(choice) {
+    if (choice === this.state.answer) {
+      this.setState({
+        correctAnswer: this.state.answer === choice
+      });
+    }   
   }
 
   executeCommand(command) {
