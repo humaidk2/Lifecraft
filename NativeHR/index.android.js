@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
+import { SensorManager } from 'NativeModules';
 import {
   AppRegistry,
   StyleSheet,
   Text,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  DeviceEventEmitter,
+  Animated,
 } from 'react-native';
 import PetBox from './petBox.js';
 import Buttons from './buttons.js';
 import StatusMessage from './statusMessage.js';
 import Info from './info.js';
 import Restart from './restart.js';
+
+var mSensorManager = require('NativeModules').SensorManager;
 
 export default class NativeHR extends Component {
   constructor(props) {
@@ -29,13 +34,16 @@ export default class NativeHR extends Component {
       feed: 0,
       love: 0,
       showNewName: false,
+      isDark: false,
+      isDarkCounter: 0,
       cmdImg: {
         food:'food1',
         sleep:'sleep1',
         love:'love1',
         code:'code1'
       },
-      logs: []
+      logs: [],
+      light: new Animated.Value(0)
     };
 
     var that = this;
@@ -45,6 +53,54 @@ export default class NativeHR extends Component {
         that.getLog();
       }
     }, 2000);
+
+    // setInterval(function() {
+    //   if (that.state.isDarkcounter > 2) {
+    //     that.state.isDarkcounter = 0;
+    //   }
+    // }, 13000);
+
+    // window.addLight = () => {
+    //   console.log('addLight is runnin', this.state.isDarkCounter);
+    //   if (this.state.isDarkCounter <= 2) {
+    //   fetch('http://138.68.6.148:3000/api/pet', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Accept': 'application/json',
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({status: 'sleeping'})
+    //     })
+    //     .then((response) => response.json())
+    //     .then((data) => {
+    //       console.log('clicked');
+    //       that.getCurrent();
+    //     })
+    //     .catch((error) => {
+    //       console.warn(error);
+    //     }).done();
+    //     this.state.isDarkCounter++;
+    //   }
+    // };
+  }
+
+  componentDidMount() {
+    var that = this;
+    DeviceEventEmitter.addListener('LightSensor', function (data) {
+      Animated.spring(
+        that.state.light, 
+        {
+          toValue: data.light
+        }
+      ).start();
+    });
+    DeviceEventEmitter.addListener('Accelerometer', function (data) {
+      if (data.x > 30) {
+        console.log(data.x); 
+      }
+    });
+    mSensorManager.startAccelerometer(100);
+    mSensorManager.startLightSensor(100);
   }
 
   componentWillMount() {
@@ -53,7 +109,7 @@ export default class NativeHR extends Component {
   }
 
   getCurrent() {
-    console.log('Fetching pet status...');
+    //console.log('Fetching pet status...');
     var that = this;
 
     fetch('http://138.68.6.148:3000/api/pet', {
@@ -236,8 +292,13 @@ export default class NativeHR extends Component {
   }
 
   render() {
+    var color = this.state.light.interpolate({
+      inputRange: [0, 10],
+      outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']
+    });
+
     return (
-      <View style={styles.appContainer}>
+      <Animated.View style={[styles.appContainer, {backgroundColor: color}]}>
         <View style={styles.gifContainer}>
           <Image source={{uri: this.state.img}} style={styles.petGif}>
             <View style={styles.infoContainer}>
@@ -259,7 +320,7 @@ export default class NativeHR extends Component {
             <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
-      </View>
+      </Animated.View>
     );
   }
 }
@@ -267,6 +328,7 @@ export default class NativeHR extends Component {
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.8)'
   },
   gifContainer: {
     flex: 4,
