@@ -19,11 +19,12 @@ import Question from './question.js';
 import {Scene, Router} from 'react-native-router-flux';
 import NativeHR2 from './NativeHR2.js'
 
+
 export default class NativeHR extends Component {
   constructor(props) {
     super(props);
-
   };
+
 
   render() {
 
