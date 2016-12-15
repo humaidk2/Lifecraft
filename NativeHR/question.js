@@ -46,6 +46,7 @@ const styles = StyleSheet.create({
 
 var Question = (props) => {
   return (
+
     <View style={styles.overlayContainer}>
       <View style={styles.questionContainer}>
         <Text style={styles.question}>{props.question}</Text>
@@ -55,6 +56,9 @@ var Question = (props) => {
         <Text style={styles.choices}>{props.choices[0]}</Text>
         <Text style={styles.choices}>{props.choices[1]}</Text>
         <Text style={styles.choices}>{props.choices[2]}</Text>
+        <Text style={styles.choices}>{props.question}</Text>
+          {props.choices.map((choice,index) => (<Text style={styles.choices} key={'' + index}>{choice}</Text>))}
+        <Text style={styles.choices}>{props.answer}</Text>
       </View>
     </View>
   );

@@ -201,7 +201,7 @@ export default class NativeHR extends Component {
       that.setState({
         question: data.results[0].question,
         answer: data.results[0].correct_answer,
-        choices: data.results[0].incorrect_answers,
+        choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
       });
     })
     .catch((error) => {
@@ -290,6 +290,18 @@ export default class NativeHR extends Component {
     this.setStatus(command);
     this.getCurrent();
   }
+
+  randomizer(arr, answer) {
+    arr.push(answer);
+    for(var i = 0; i < arr.length; i++) {
+      var temp = Math.floor(Math.random() * arr.length);
+      var swap = arr[temp];
+      arr[temp] = arr[i];
+      arr[i] = swap;
+    }
+    return arr;
+  }
+
 
   render() {
     return (
