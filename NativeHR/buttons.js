@@ -19,7 +19,7 @@ module.exports = (props) => (
         <Image source={{uri: props.cmdImg.food}} style={{ width: 50, height: 50}} />
       </View>
     </TouchableHighlight>
-    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('playing'); }}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { Actions.exerciseChallenge(); }}>
       <View>
         <Image source={{uri: props.cmdImg.love}} style={{ width: 50, height: 50}} />
       </View>

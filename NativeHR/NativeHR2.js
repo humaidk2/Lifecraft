@@ -141,6 +141,7 @@ export default class NativeHR2 extends Component {
       }
     });
     that.state.sound.stop();
+
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
         that.state.light,
@@ -172,11 +173,16 @@ export default class NativeHR2 extends Component {
         window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
       }
     });
-    DeviceEventEmitter.addListener('StepCounter', function (data) {
-    });
+
+//     mSensorManager.startAccelerometer(100);
+//     mSensorManager.startLightSensor(100);
+
+//     DeviceEventEmitter.addListener('StepCounter', function (data) {
+//     });
     // mSensorManager.startStepCounter(1000);
     // mSensorManager.startAccelerometer(100);
     // mSensorManager.startLightSensor(100);
+
   }
 
   componentWillMount() {
