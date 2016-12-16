@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { SensorManager } from 'NativeModules';
 import {
   AppRegistry,
@@ -9,80 +9,131 @@ import {
   Dimensions,
   DeviceEventEmitter,
   Animated,
+  TouchableHighlight,
 } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
 import {Actions} from 'react-native-router-flux';
 import Sound from 'react-native-sound';
+import * as Progress from 'react-native-progress';
 
 const styles = StyleSheet.create({
-  appContainer: {
-    flex: 1,
-  },
-  questionContainer: {
-    flex: 10.5,
-  },
-  questionOverlay: {
+  gameContainer: {
     flex: 1,
   },
   gifContainer: {
-    flex: 4,
-  },
-  statusContainer: {
     flex: 1,
+    width: Dimensions.get('window').width,
   },
-  statusMsg: {
+  infoContainer: {
+    flex: 2,
+  },
+  titleContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  title: {
     fontWeight: 'bold',
-    fontSize: 20,
-    marginTop: 20,
+    fontSize: 40,
     textAlign: 'center',
   },
-  statusText: {
-    color: 'red',
+  barContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  statsContainer: {
-    flex: 3.5,
+  progressBar: {
+    height: 30,
   },
-  logContainer: {
-    flex: 2,
-    paddingLeft: 20
+  inputContainer: {
+    flex: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  actionContainer: {
-    flex: 1.2,
-    paddingTop: 10,
+  tapCircle: {
+    height: 200,
+    width: 200,
+    borderRadius: 100,
+    borderStyle: 'solid',
+    borderWidth: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  petGif: {
-    width: Dimensions.get('window').width,
-    top: 0,
-    height: 226
+  tapCircleText: {
+    textAlign: 'center',
+    fontSize: 36,
   }
-
 });
 
-// var counter = 30;
+var mSensorManager = require('NativeModules').SensorManager;
 
-// setInterval(function() {
-//   counter--;
-// }, 1000);
+export default class cookingChallenge extends Component {
+  constructor(props) {
+    super(props);
+    this.triggerCooking.bind(this);
+    this.state = {
+      progressPercent: 0,
+      gameStart: false,
+      gameComplete: false,
+      buttonText: 'START',
+    };
+  }
 
-var cookingChallenge = (props) => {
-  return (
-    <Animated.View style={[styles.appContainer, {backgroundColor: 'white'}]}>
-    <Image source={{uri: 'cookingmg'}} style={{height: 226, width: Dimensions.get('window').width}}></Image>
-    <Text>Cooking Challenge</Text>
-    <View style={{flexDirection: 'row'}}>
-    <Text>Timer: 30s left  </Text>
-    <Text>Total Points: 5  </Text>
-    <Text>Points Needed: 30</Text>
-    </View>
+  componentDidMount() {
+    var that = this;
+    DeviceEventEmitter.addListener('Accelerometer', function (data) {
+      //Cook
+      if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
+        if (that.state.gameStart && !that.state.gameComplete) {
+          that.triggerCooking();
+        }
+      }
+    });
+    mSensorManager.startAccelerometer(100);
+  }
 
-    <Text>Random generate text with cool colors/effects for sucessful cook!!!</Text>
-    <Text>example popups: AWESOME FLIP!, BEAUTIFUL, MAGNIFICENT, WONDERFUL, MAJESTIC, DONT STOP, BREATHTAKING COOKING</Text>
+  startGame() {
+    this.setState({
+      gameStart: true,
+      buttonText: 'FRY!'
+    });
+  }
 
-    <Text>Add music</Text>
-    <Text>If successful, s</Text>
+  triggerCooking() {
+    var that = this;
+    var updatedProgress = that.state.progressPercent += 0.1;
+    that.setState({
+      progressPercent: updatedProgress,
+    });
 
-    </Animated.View>
-    );
-};
+    if (updatedProgress >= 1) {
+      that.setState({
+        gameStart: false,
+        gameComplete: true,
+        buttonText: 'COMPLETE',
+      });
+      Actions.popTo('NativeHR2');
+    }
+  }
 
-module.exports = cookingChallenge;
+  render() {
+    return (
+      <Animated.View style={styles.gameContainer}>
+        <Image source={{uri: 'cookingmg'}} style={styles.gifContainer}></Image>
+        <View style={styles.infoContainer}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>COOKING CHALLENGE</Text>
+          </View>
+          <View style={styles.barContainer}>
+            <Progress.Bar progress={this.state.progressPercent} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
+          </View>
+          <View style={styles.inputContainer}>
+            <TouchableHighlight style={styles.tapCircle} onPress={this.startGame.bind(this)}>
+              <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </Animated.View>
+    ); 
+  }
+}
