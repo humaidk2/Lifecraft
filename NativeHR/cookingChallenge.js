@@ -84,8 +84,9 @@ export default class cookingChallenge extends Component {
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
       //Cook
       if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
-        var condition = (that.state.gameStart && !that.state.gameComplete);
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', triggerCooking);
+        if (that.state.gameStart && !that.state.gameComplete) {
+          that.triggerCooking();
+        }
       }
     });
     mSensorManager.startAccelerometer(100);
@@ -111,7 +112,7 @@ export default class cookingChallenge extends Component {
         gameComplete: true,
         buttonText: 'COMPLETE',
       });
-      Actions.pop();
+      Actions.popTo('NativeHR2');
     }
   }
 
