@@ -18,6 +18,7 @@ import Restart from './restart.js';
 import Question from './question.js';
 import {Scene, Router} from 'react-native-router-flux';
 import NativeHR2 from './NativeHR2.js';
+import cookingChallenge from './cookingChallenge.js';
 
 
 export default class NativeHR extends Component {
@@ -33,6 +34,7 @@ export default class NativeHR extends Component {
           <Scene key="NativeHR2" initial={true} component={NativeHR2} title="Home"/>
               <Scene key="petBox" component={PetBox} title="Register"/>
               <Scene key="question" component={Question} title="Question" duration={0}/>
+              <Scene key="cookingChallenge" component={cookingChallenge} title="cookingChallenge" duration={0}/>
           </Scene>
       </Router>
     );
