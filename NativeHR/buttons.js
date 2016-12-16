@@ -8,10 +8,13 @@ import {
   Dimensions,
   TouchableHighlight
 } from 'react-native';
+import {Scene, Router} from 'react-native-router-flux';
+import {Actions} from 'react-native-router-flux';
+import Sound from 'react-native-sound';
 
 module.exports = (props) => (
   <View style = {{flex: 1, flexDirection: 'row', justifyContent: 'space-between', justifyContent: 'space-around'}}>
-    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('eating'); } }>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { Actions.cookingChallenge() } }>
       <View>
         <Image source={{uri: props.cmdImg.food}} style={{ width: 50, height: 50}} />
       </View>
