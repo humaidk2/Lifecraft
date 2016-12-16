@@ -163,8 +163,8 @@ export default class NativeHR2 extends Component {
     DeviceEventEmitter.addListener('StepCounter', function (data) {
     });
     // mSensorManager.startStepCounter(1000);
-    // mSensorManager.startAccelerometer(100);
-    // mSensorManager.startLightSensor(100);
+    mSensorManager.startAccelerometer(100);
+    mSensorManager.startLightSensor(100);
   }
 
   componentWillMount() {
@@ -329,7 +329,7 @@ export default class NativeHR2 extends Component {
       });
       var sleeping = {'status': 'coding'};
       window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
-      Actions.NativeHR2();
+      Actions.pop();
     }
   }
 
@@ -388,6 +388,7 @@ export default class NativeHR2 extends Component {
                   <Info info={this.state}/>
                 </View>
               </Image>
+              <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
             </View>
             <View style={styles.statusContainer}>
               <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
