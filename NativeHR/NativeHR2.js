@@ -110,22 +110,22 @@ export default class NativeHR2 extends Component {
     window.sensorHandler = (status, link, obj) => {
       if (status) {
         fetch(link, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-          })
-          .then((response) => response)
-          .then((data) => {
-            that.getCurrent();
-          })
-          .catch((error) => {
-            console.warn(error);
-          }).done();
-        }
-      };
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(obj)
+        })
+        .then((response) => response)
+        .then((data) => {
+          that.getCurrent();
+        })
+        .catch((error) => {
+          console.warn(error);
+        }).done();
+      }
+    };
   }
 
   componentDidMount() {
@@ -175,8 +175,8 @@ export default class NativeHR2 extends Component {
     DeviceEventEmitter.addListener('StepCounter', function (data) {
     });
     // mSensorManager.startStepCounter(1000);
-    mSensorManager.startAccelerometer(100);
-    mSensorManager.startLightSensor(100);
+    // mSensorManager.startAccelerometer(100);
+    // mSensorManager.startLightSensor(100);
   }
 
   componentWillMount() {
@@ -389,13 +389,12 @@ export default class NativeHR2 extends Component {
         answer: data.results[0].correct_answer,
         choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
       });
-                Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices})
+      Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices});
     })
     .catch((error) => {
       console.warn(error);
     }).done();
   }
-
 
   render() {
     var color = this.state.light.interpolate({
