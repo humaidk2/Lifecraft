@@ -17,8 +17,8 @@ import Info from './info.js';
 import Restart from './restart.js';
 import Question from './question.js';
 import {Scene, Router} from 'react-native-router-flux';
-import {Actions} from 'react-native-router-flux'
-
+import {Actions} from 'react-native-router-flux';
+import Sound from 'react-native-sound';
 const styles = StyleSheet.create({
   appContainer: {
     flex: 1,
@@ -94,6 +94,7 @@ export default class NativeHR2 extends Component {
         love: 'love1',
         code: 'code1'
       },
+      sound: 'dead',
       logs: [],
       light: new Animated.Value(0)
     };
@@ -128,7 +129,18 @@ export default class NativeHR2 extends Component {
   }
 
   componentDidMount() {
+        // Import the react-native-sound module
     var that = this;
+    that.state.sound = new Sound('dead.mp3', Sound.MAIN_BUNDLE, (e) => {
+      if (e) {
+        console.log('error', e);
+      } else {
+        console.log('duration', that.state.sound.getDuration());
+        that.state.sound.play();
+        that.state.sound.setVolume(1.0);
+      }
+    });
+    that.state.sound.stop();
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
         that.state.light,
@@ -185,6 +197,19 @@ export default class NativeHR2 extends Component {
     })
     .then((response) => response.json())
     .then((data) => {
+      if (that.state.status !== data.status) {
+        that.state.sound.stop();
+        that.state.sound = new Sound(data.status + '.mp3', Sound.MAIN_BUNDLE, (e) => {
+          if (e) {
+            console.log('error', e);
+          } else {
+            console.log('duration', that.state.sound.getDuration());
+            that.state.sound.play();
+            that.state.sound.setVolume(1.0);
+          }
+        });
+      }
+      
       that.setState({
         name: data.name,
         mood: data.mood,
@@ -329,7 +354,7 @@ export default class NativeHR2 extends Component {
       });
       var sleeping = {'status': 'coding'};
       window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
-      Actions.NativeHR2();
+      Actions.pop();
     }
   }
 
