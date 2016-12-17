@@ -7,6 +7,7 @@ import {
   Text,
   View,
   Image,
+  Vibration,
   Dimensions,
   DeviceEventEmitter,
   Animated,
@@ -22,7 +23,12 @@ const styles = StyleSheet.create({
 
 });
 
+const moveSet = ['run', 'jump', 'duck', 'run'];
+
 var mSensorManager = require('NativeModules').SensorManager;
+var randMove = function() {
+  return moveSet[Math.floor(Math.random() * 4)];
+};
 
 export default class exerciseChallenge extends Component {
   constructor(props) {
@@ -33,25 +39,39 @@ export default class exerciseChallenge extends Component {
       color: 'white',
       status: 'stop',
       points: 0,
-      result: (<View></View>)
+      result: (<View></View>),
+      mode: randMove(),
+      ducks: 0,
+      jumps: 0
     };
   }
   componentDidMount() {
     var that = this;
-    mSensorManager.startStepCounter(500);
+    mSensorManager.startStepCounter(100);
     mSensorManager.startAccelerometer(100);
 
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
-      if (data.z >= 20) {
-        console.log('data.z', data.z);  
+      if (data.z >= 25 && that.state.status === 'start' && that.state.mode === 'jump') {
+        console.log('Jump', data.z);
+        that.setState({
+          jumps: that.state.jumps + 1,
+          points: that.state.points + 2
+        }); 
+      }
+      if (data.z <= -2 && that.state.status === 'start' && that.state.mode === 'duck') {
+        console.log('Duck', data.z);
+        that.setState({
+          ducks: that.state.ducks + 1,
+          points: that.state.points + 2
+        }); 
       }
     });
 
     DeviceEventEmitter.addListener('StepCounter', function (data) {
-      if (that.state.status === 'start') {
+      if (that.state.status === 'start' && that.state.mode === 'run') {
         that.setState({
-          steps: that.state.steps + 1,
-          points: that.state.points + 3,
+          steps: that.state.steps + 2,
+          points: that.state.points + 1.5,
         });
         console.log(that.state.steps);
       }
@@ -71,6 +91,12 @@ export default class exerciseChallenge extends Component {
         that.setState({
           counter: that.state.counter - 1
         });
+        if (that.state.counter % 3 === 0) {
+          that.setState ({
+            mode: randMove()
+          });
+          Vibration.vibrate([0, 800]);
+        }
       } else if (that.state.counter === 0) {
         // Actions.error('Times up breh');
         if (that.state.points < 30) {
@@ -99,6 +125,7 @@ export default class exerciseChallenge extends Component {
   }
   start() {
     var that = this;
+    Vibration.vibrate([0, 800]);
     this.setState({
       status: 'start'
     });
@@ -131,11 +158,18 @@ export default class exerciseChallenge extends Component {
               <Text style={{fontSize: 40, textAlign: 'center'}}>Timer: {that.state.counter}s left </Text>
             </View>
             <View>
-              <Text style={{fontSize: 40, textAlign: 'center'}}>Total Steps: {that.state.steps} </Text>
+              <Text style={{fontSize: 20, textAlign: 'center'}}>Total Steps: {that.state.steps} </Text>
+            </View>
+            <View>
+              <Text style={{fontSize: 20, textAlign: 'center'}}>Total Jumps: {that.state.jumps} </Text>
+            </View>
+            <View>
+              <Text style={{fontSize: 20, textAlign: 'center'}}>Total Ducks: {that.state.ducks} </Text>
             </View>
             <View>
               <Text style={{fontSize: 40, textAlign: 'center'}}>Points Needed: {that.state.points <= 30 ? 30 - that.state.points : 0}</Text>
             </View>
+            <Text style={{fontSize: 40, textAlign: 'center'}}>{that.state.mode}</Text>
             {that.state.result}
           </View>
         )
