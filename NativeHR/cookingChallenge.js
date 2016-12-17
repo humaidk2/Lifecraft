@@ -74,7 +74,11 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 10,
-  }
+  },
+  timerText: {
+    textAlign: 'center',
+    fontSize: 16,
+  },
 });
 
 var mSensorManager = require('NativeModules').SensorManager;
@@ -178,8 +182,8 @@ export default class cookingChallenge extends Component {
             </TouchableHighlight>
           </View>
           <View style={styles.continueContainer}>
-            {this.state.continueButton}
             {this.state.timer}
+            {this.state.continueButton}
           </View>
         </View>
       </Animated.View>

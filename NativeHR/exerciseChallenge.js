@@ -24,19 +24,19 @@ const styles = StyleSheet.create({
 
 });
 
-const moveSet = ['run', 'jump', 'duck', 'run'];
+const moveSet = ['jump', 'duck', 'run'];
 
 var mSensorManager = require('NativeModules').SensorManager;
 var randMove = function() {
-  return moveSet[Math.floor(Math.random() * 4)];
+  return moveSet[Math.floor(Math.random() * moveSet.length)];
 };
-
+var timer = 20;
 export default class exerciseChallenge extends Component {
   constructor(props) {
     super(props);
     this.state = {
       steps: 0,
-      counter: 15,
+      counter: timer,
       color: 'white',
       status: 'stop',
       points: 0,
@@ -152,9 +152,10 @@ export default class exerciseChallenge extends Component {
     return (
       <View style={[styles.appContainer, {backgroundColor: that.state.color}]}>
       {
-        (that.state.status !== 'start' && that.state.counter === 15) ? (
+        (that.state.status !== 'start' && that.state.counter === timer) ? (
           <View style={{flex: 1}}>
-            <Text style={{fontSize: 40}}>GET READY TO RUN!</Text>
+            <Text style={{fontSize: 40, textAlign: 'center'}}>Tomb Dash</Text>
+            <Text style={{fontSize: 20, textAlign: 'center'}}>Perform the activity displayed on screen to earn points.</Text>
             <Button title='Start' onPress={that.start.bind(this)} />
           </View>) : (
           <View >
