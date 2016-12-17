@@ -9,6 +9,7 @@ import {
   Dimensions,
   DeviceEventEmitter,
   Animated,
+  Button,
   TouchableHighlight,
 } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
@@ -34,7 +35,9 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 40,
+    fontSize: 36,
+    marginLeft: 5,
+    marginRight: 5,
     textAlign: 'center',
   },
   barContainer: {
@@ -60,8 +63,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   tapCircleText: {
+    color: 'white',
     textAlign: 'center',
     fontSize: 36,
+  },
+  continueContainer: {
+    flex: 1,
+    marginLeft: 20,
+    marginRight: 20,
   }
 });
 
@@ -76,6 +85,8 @@ export default class cookingChallenge extends Component {
       gameStart: false,
       gameComplete: false,
       buttonText: 'START',
+      buttonColor: 'blue',
+      continueButton: null,
     };
   }
 
@@ -95,7 +106,8 @@ export default class cookingChallenge extends Component {
   startGame() {
     this.setState({
       gameStart: true,
-      buttonText: 'FRY!'
+      buttonText: 'FRY!',
+      buttonColor: 'orange'
     });
   }
 
@@ -111,9 +123,14 @@ export default class cookingChallenge extends Component {
         gameStart: false,
         gameComplete: true,
         buttonText: 'COMPLETE',
+        buttonColor: 'green',
+        continueButton: <Button title={'Continue'} onPress={that.continue}/>
       });
-      Actions.popTo('NativeHR2');
     }
+  }
+
+  continue() {
+    Actions.popTo('NativeHR2');
   }
 
   render() {
@@ -125,12 +142,15 @@ export default class cookingChallenge extends Component {
             <Text style={styles.title}>COOKING CHALLENGE</Text>
           </View>
           <View style={styles.barContainer}>
-            <Progress.Bar progress={this.state.progressPercent} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
+            <Progress.Bar progress={this.state.progressPercent} color={'red'} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
           </View>
           <View style={styles.inputContainer}>
-            <TouchableHighlight style={styles.tapCircle} onPress={this.startGame.bind(this)}>
+            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.gameStart.bind(this)}>
               <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
             </TouchableHighlight>
+          </View>
+          <View style={styles.continueContainer}>
+            {this.state.continueButton}
           </View>
         </View>
       </Animated.View>
