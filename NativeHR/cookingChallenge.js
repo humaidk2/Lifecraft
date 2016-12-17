@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 36,
+    fontSize: 30,
     marginLeft: 5,
     marginRight: 5,
     textAlign: 'center',
@@ -87,7 +87,8 @@ export default class cookingChallenge extends Component {
       buttonText: 'START',
       buttonColor: 'blue',
       continueButton: null,
-      sound: null,
+      sizzle: null,
+      pan: null,
     };
   }
 
@@ -102,6 +103,8 @@ export default class cookingChallenge extends Component {
       }
     });
     mSensorManager.startAccelerometer(100);
+    that.state.sizzle = new Sound('sizzling.mp3', Sound.MAIN_BUNDLE, (e) => {});
+    that.state.pan = new Sound('fork.mp3', Sound.MAIN_BUNDLE, (e) => {});
   }
 
   startGame() {
@@ -110,6 +113,9 @@ export default class cookingChallenge extends Component {
       buttonText: 'FRY!',
       buttonColor: 'orange'
     });
+    this.state.sizzle.play();
+    this.state.sizzle.setNumberOfLoops(-1);
+    this.state.sizzle.setVolume(0.7);
   }
 
   triggerCooking() {
@@ -119,25 +125,25 @@ export default class cookingChallenge extends Component {
       progressPercent: updatedProgress,
     });
 
-    that.state.sound = new Sound('cooking.mp3', Sound.MAIN_BUNDLE, (e) => {
-      if (!e) {
-        that.state.sound.play();
-        that.state.sound.setVolume(1.0);
-      }
-    });
+    that.state.pan.play();
+    that.state.pan.setVolume(1.0);
 
     if (updatedProgress >= 1) {
+      that.state.sizzle.stop();
       that.setState({
         gameStart: false,
         gameComplete: true,
         buttonText: 'COMPLETE',
         buttonColor: 'green',
-        continueButton: <Button title={'Continue'} onPress={that.continue}/>
+        continueButton: <Button title={'Continue'} onPress={that.continue.bind(that)}/>
       });
     }
   }
 
   continue() {
+    this.state.sizzle.stop();
+    var eating = {'status': 'eating'};
+    window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', eating);
     Actions.popTo('NativeHR2');
   }
 
@@ -153,7 +159,7 @@ export default class cookingChallenge extends Component {
             <Progress.Bar progress={this.state.progressPercent} color={'red'} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
           </View>
           <View style={styles.inputContainer}>
-            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.triggerCooking.bind(this)}>
+            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.startGame.bind(this)}>
               <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
             </TouchableHighlight>
           </View>

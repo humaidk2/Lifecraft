@@ -38,7 +38,35 @@ export default class exerciseChallenge extends Component {
   }
   componentDidMount() {
     var that = this;
+    mSensorManager.startStepCounter(500);
+    mSensorManager.startAccelerometer(100);
+
+    DeviceEventEmitter.addListener('Accelerometer', function (data) {
+      if (data.z >= 20) {
+        console.log('data.z', data.z);  
+      }
+    });
+
+    DeviceEventEmitter.addListener('StepCounter', function (data) {
+      if (that.state.status === 'start') {
+        that.setState({
+          steps: that.state.steps + 1,
+          points: that.state.points + 3,
+        });
+        console.log(that.state.steps);
+      }
+    });
+
     window.interval = setInterval(function() {
+      if (that.state.points >= 30) {
+        that.setState({
+          counter: 0,
+          result: (<View>
+                    <Text>SUCCESS</Text>
+                    <Button title='Continue' onPress={that.continue}/>
+                   </View>)
+        });
+      }
       if (that.state.status === 'start' && that.state.counter > 0) {
         that.setState({
           counter: that.state.counter - 1
@@ -51,7 +79,7 @@ export default class exerciseChallenge extends Component {
             color: 'red',
             status: 'stop',
             result: (<View>
-                      <Text>You Lose</Text>
+                      <Text style={{fontSize: 40, textAlign: 'center'}}>FAIL</Text>
                       <Button title='Continue' onPress={that.continue}/>
                      </View>)
           });     
@@ -61,26 +89,16 @@ export default class exerciseChallenge extends Component {
             color: 'green',
             status: 'stop',
             result: (<View>
-                      <Text>You Win</Text>
+                      <Text style={{fontSize: 40, textAlign: 'center'}}>SUCCESS</Text>
                       <Button title='Continue' onPress={that.continue}/>
                      </View>)
           });
         }
       }
     }, 1000);
-
-    DeviceEventEmitter.addListener('StepCounter', function (data) {
-      if (that.state.status === 'start') {
-        that.setState({
-          steps: that.state.steps + 1,
-          points: that.state.points + 10,
-        });
-        console.log(that.state.steps);
-      }
-    });
   }
   start() {
-    mSensorManager.startStepCounter(1000);
+    var that = this;
     this.setState({
       status: 'start'
     });
@@ -88,6 +106,7 @@ export default class exerciseChallenge extends Component {
 
   continue() {
     mSensorManager.stopStepCounter();
+    mSensorManager.stopAccelerometer();
     var that = this;
     console.log('window interval', window.interval);
     clearInterval(window.interval);
@@ -115,7 +134,7 @@ export default class exerciseChallenge extends Component {
               <Text style={{fontSize: 40, textAlign: 'center'}}>Total Steps: {that.state.steps} </Text>
             </View>
             <View>
-              <Text style={{fontSize: 40, textAlign: 'center'}}>Points Needed: {30 - that.state.points}</Text>
+              <Text style={{fontSize: 40, textAlign: 'center'}}>Points Needed: {that.state.points <= 30 ? 30 - that.state.points : 0}</Text>
             </View>
             {that.state.result}
           </View>

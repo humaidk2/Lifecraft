@@ -170,7 +170,6 @@ export default class NativeHR2 extends Component {
         // console.log('cooking');
         var eating = {'status': 'eating'};
         var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
       }
     });
 
@@ -181,7 +180,7 @@ export default class NativeHR2 extends Component {
 //     });
     // mSensorManager.startStepCounter(1000);
     // mSensorManager.startAccelerometer(100);
-    // mSensorManager.startLightSensor(100);
+    mSensorManager.startLightSensor(100);
 
   }
 
@@ -358,8 +357,8 @@ export default class NativeHR2 extends Component {
       this.setState({
         isQuestion: !this.state.isQuestion
       });
-      var sleeping = {'status': 'coding'};
-      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
+      var coding = {'status': 'coding'};
+      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', coding);
       Actions.pop();
     }
   }
