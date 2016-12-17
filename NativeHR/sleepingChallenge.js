@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { SensorManager } from 'NativeModules';
 import {
   AppRegistry,
   StyleSheet,
@@ -9,8 +8,6 @@ import {
   Dimensions,
   DeviceEventEmitter,
   Animated,
-  Vibration,
-  BackAndroid,
   Button,
   TouchableHighlight,
 } from 'react-native';
@@ -74,90 +71,91 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     marginBottom: 10,
+  },
+  ghost: {
+    backgroundColor: 'purple',
+    position: 'absolute',
+    height: 50,
+    width: 50,
+    borderRadius: 25,
+  },
+  timerText: {
+    fontSize: 16,
+    textAlign: 'center',
+    color: 'black',
   }
 });
 
-var mSensorManager = require('NativeModules').SensorManager;
-
-export default class cookingChallenge extends Component {
+export default class sleepingChallenge extends Component {
   constructor(props) {
     super(props);
     this.startTime = 0;
     this.endTime = 0;
-    this.triggerCooking.bind(this);
     this.state = {
-      progressPercent: 0,
       gameStart: false,
       gameComplete: false,
-      buttonText: 'START',
-      buttonColor: 'blue',
+      button:
+        <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: 'blue'}]} onPress={this.startGame.bind(this)}>
+          <Text style={styles.tapCircleText}>START</Text>
+        </TouchableHighlight>,
       continueButton: null,
-      sizzle: null,
-      pan: null,
+      progressPercent: 0,
+      ghost: null,
       timer: null,
     };
   }
 
-  componentDidMount() {
-    BackAndroid.addEventListener('hardwareBackPress', () => Actions.pop());
-    var that = this;
-    DeviceEventEmitter.addListener('Accelerometer', function (data) {
-      //Cook
-      if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
-        if (that.state.gameStart && !that.state.gameComplete) {
-          that.triggerCooking();
-        }
-      }
-    });
-    mSensorManager.startAccelerometer(100);
-    that.state.sizzle = new Sound('sizzling.mp3', Sound.MAIN_BUNDLE, (e) => {});
-    that.state.pan = new Sound('fork.mp3', Sound.MAIN_BUNDLE, (e) => {});
-  }
-
   startGame() {
-    BackAndroid.addEventListener('hardwareBackPress', () => true);
     this.setState({
       gameStart: true,
-      buttonText: 'FRY!',
-      buttonColor: 'orange'
+      button: null,
     });
     this.startTime = new Date();
-    this.state.sizzle.play();
-    this.state.sizzle.setNumberOfLoops(-1);
-    this.state.sizzle.setVolume(0.7);
+    this.generateRandomGhost();
   }
 
-  triggerCooking() {
+  generateRandomGhost() {
+    var horizontalMax = Dimensions.get('window').width * 0.9;
+    var verticalMax = 400;
+    var verticalMin = 0;
+
+    var spaceLeft = Math.floor(Math.random() * (horizontalMax + 1));
+    var spaceTop = Math.floor(Math.random() * (verticalMax - verticalMin + 1)) + verticalMin;
+    this.setState({
+      ghost:
+        <TouchableHighlight underlayColor='transparent' style={[styles.ghost, {left: spaceLeft}, {top: spaceTop}]} onPress={this.triggerSleep.bind(this)}>
+          <View></View>
+        </TouchableHighlight>
+    });
+  }
+
+  triggerSleep() {
     var that = this;
-    var updatedProgress = that.state.progressPercent += 0.1;
+    var updatedProgress = that.state.progressPercent += 0.5;
     that.setState({
       progressPercent: updatedProgress,
+      ghost: null,
     });
-
-    that.state.pan.play();
-    that.state.pan.setVolume(1.0);
-    Vibration.vibrate([0, 500]);
-
     if (updatedProgress >= 1) {
       that.endTime = new Date();
-      that.state.sizzle.stop();
       that.setState({
         gameStart: false,
         gameComplete: true,
-        buttonText: 'COMPLETE',
-        buttonColor: 'green',
+        button:
+          <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: 'green'}]}>
+            <Text style={styles.tapCircleText}>COMPLETE</Text>
+          </TouchableHighlight>,
         continueButton: <Button title={'Continue'} onPress={that.continue.bind(that)}/>,
         timer: <Text style={styles.timerText}>Elapsed Time: {that.endTime - that.startTime} ms</Text>,
       });
+    } else {
+      that.generateRandomGhost();
     }
   }
 
   continue() {
-    BackAndroid.removeEventListener('hardwareBackPress', () => Actions.pop());
-    BackAndroid.removeEventListener('hardwareBackPress', () => true);
-    this.state.sizzle.stop();
-    var eating = {'status': 'eating'};
-    window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', eating);
+    var sleeping = {'status': 'sleeping'};
+    window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
     Actions.popTo('NativeHR2');
   }
 
@@ -167,19 +165,18 @@ export default class cookingChallenge extends Component {
         <Image source={{uri: 'cookingmg'}} style={styles.gifContainer}></Image>
         <View style={styles.infoContainer}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>COOKING CHALLENGE</Text>
+            <Text style={styles.title}>SLEEPING CHALLENGE</Text>
           </View>
           <View style={styles.barContainer}>
             <Progress.Bar progress={this.state.progressPercent} color={'red'} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
           </View>
           <View style={styles.inputContainer}>
-            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.startGame.bind(this)}>
-              <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
-            </TouchableHighlight>
+            {this.state.button}
           </View>
+            {this.state.ghost}
           <View style={styles.continueContainer}>
-            {this.state.continueButton}
             {this.state.timer}
+            {this.state.continueButton}
           </View>
         </View>
       </Animated.View>
