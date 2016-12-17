@@ -58,14 +58,14 @@ export default class exerciseChallenge extends Component {
         that.setState({
           jumps: that.state.jumps + 1,
           points: that.state.points + 2
-        }); 
+        });
       }
       if (data.z <= -2 && that.state.status === 'start' && that.state.mode === 'duck') {
         console.log('Duck', data.z);
         that.setState({
           ducks: that.state.ducks + 1,
           points: that.state.points + 2
-        }); 
+        });
       }
     });
 
@@ -110,7 +110,7 @@ export default class exerciseChallenge extends Component {
                       <Text style={{fontSize: 40, textAlign: 'center'}}>FAIL</Text>
                       <Button title='Continue' onPress={that.continue}/>
                      </View>)
-          });     
+          });
         } else {
           //they pass
           that.setState({
@@ -145,7 +145,7 @@ export default class exerciseChallenge extends Component {
     clearInterval(window.interval);
     return Actions.popTo('NativeHR2');
   }
- 
+
 
   render() {
     var that = this;
@@ -156,9 +156,9 @@ export default class exerciseChallenge extends Component {
           <View style={{flex: 1}}>
             <Text style={{fontSize: 40}}>GET READY TO RUN!</Text>
             <Button title='Start' onPress={that.start.bind(this)} />
-          </View>) : (     
+          </View>) : (
           <View >
-            <Image source={{uri: 'runningmg'}} style={{height: 226, width: Dimensions.get('window').width}}></Image>
+            <Image source={{uri: that.state.mode}} style={{height: 226, width: Dimensions.get('window').width}}></Image>
             <Text style={{fontSize: 40, textAlign: 'center'}}>Exercise Challenge</Text>
             <View>
               <Text style={{fontSize: 40, textAlign: 'center'}}>Timer: {that.state.counter}s left </Text>
