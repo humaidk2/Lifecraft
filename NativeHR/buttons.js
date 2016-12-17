@@ -30,7 +30,7 @@ module.exports = (props) => (
     <Image source={{uri: props.cmdImg.code}} style={{ width: 50, height: 50}}/>
     </View>
     </TouchableHighlight>
-    <TouchableHighlight underlayColor='transparent' onPress={() => { props.executeCommand('sleeping'); }}>
+    <TouchableHighlight underlayColor='transparent' onPress={() => { Actions.sleepingChallenge(); }}>
       <View>
         <Image source={{uri: props.cmdImg.sleep}} style={{ width: 50, height: 50}}/>
         </View>
