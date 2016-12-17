@@ -9,6 +9,7 @@ import {
   Image,
   Vibration,
   Dimensions,
+  BackAndroid,
   DeviceEventEmitter,
   Animated,
 } from 'react-native';
@@ -46,6 +47,7 @@ export default class exerciseChallenge extends Component {
     };
   }
   componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => Actions.pop());
     var that = this;
     mSensorManager.startStepCounter(100);
     mSensorManager.startAccelerometer(100);
@@ -123,7 +125,9 @@ export default class exerciseChallenge extends Component {
       }
     }, 1000);
   }
+
   start() {
+    BackAndroid.addEventListener('hardwareBackPress', () => true);
     var that = this;
     Vibration.vibrate([0, 800]);
     this.setState({
@@ -132,6 +136,8 @@ export default class exerciseChallenge extends Component {
   }
 
   continue() {
+    BackAndroid.removeEventListener('hardwareBackPress', () => Actions.pop());
+    BackAndroid.removeEventListener('hardwareBackPress', () => true);
     mSensorManager.stopStepCounter();
     mSensorManager.stopAccelerometer();
     var that = this;

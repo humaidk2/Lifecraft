@@ -10,6 +10,7 @@ import {
   DeviceEventEmitter,
   Animated,
   Vibration,
+  BackAndroid,
   Button,
   TouchableHighlight,
 } from 'react-native';
@@ -94,6 +95,7 @@ export default class cookingChallenge extends Component {
   }
 
   componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => Actions.pop());
     var that = this;
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
       //Cook
@@ -109,6 +111,7 @@ export default class cookingChallenge extends Component {
   }
 
   startGame() {
+    BackAndroid.addEventListener('hardwareBackPress', () => true);
     this.setState({
       gameStart: true,
       buttonText: 'FRY!',
@@ -143,6 +146,8 @@ export default class cookingChallenge extends Component {
   }
 
   continue() {
+    BackAndroid.removeEventListener('hardwareBackPress', () => Actions.pop());
+    BackAndroid.removeEventListener('hardwareBackPress', () => true);
     this.state.sizzle.stop();
     var eating = {'status': 'eating'};
     window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', eating);
