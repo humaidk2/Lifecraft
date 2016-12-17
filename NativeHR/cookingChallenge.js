@@ -87,6 +87,7 @@ export default class cookingChallenge extends Component {
       buttonText: 'START',
       buttonColor: 'blue',
       continueButton: null,
+      sound: null,
     };
   }
 
@@ -118,6 +119,13 @@ export default class cookingChallenge extends Component {
       progressPercent: updatedProgress,
     });
 
+    that.state.sound = new Sound('cooking.mp3', Sound.MAIN_BUNDLE, (e) => {
+      if (!e) {
+        that.state.sound.play();
+        that.state.sound.setVolume(1.0);
+      }
+    });
+
     if (updatedProgress >= 1) {
       that.setState({
         gameStart: false,
@@ -145,7 +153,7 @@ export default class cookingChallenge extends Component {
             <Progress.Bar progress={this.state.progressPercent} color={'red'} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
           </View>
           <View style={styles.inputContainer}>
-            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.gameStart.bind(this)}>
+            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.triggerCooking.bind(this)}>
               <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
             </TouchableHighlight>
           </View>
