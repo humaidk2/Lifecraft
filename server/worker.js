@@ -3,27 +3,27 @@ var postLog = require('./controller').postLog;
 
 /********** Image Assets **********/
 var lvl1 = {
-  normal: "normal1",
-  runaway: "runaway1",
-  dead: "dead1",
-  sick: "sick1",
-  happy: "sick1",
+  normal: 'normal1',
+  runaway: 'runaway1',
+  dead: 'dead1',
+  sick: 'sick1',
+  happy: 'sick1',
 };
 
 var lvl2 = {
-  normal: "normal2",
-  runaway: "runaway2",
-  dead: "dead2",
-  sick: "sick2",
-  happy: "sick2",
+  normal: 'normal2',
+  runaway: 'runaway2',
+  dead: 'dead2',
+  sick: 'sick2',
+  happy: 'sick2',
 };
 
 var lvl3 = {
-  normal: "coding3",
-  runaway: "coding3",
-  dead: "dead3",
-  sick: "coding3",
-  happy: "coding3",
+  normal: 'coding3',
+  runaway: 'coding3',
+  dead: 'dead3',
+  sick: 'coding3',
+  happy: 'coding3',
 };
 
 var urls = {
@@ -33,45 +33,48 @@ var urls = {
 };
 
 module.exports = {
-  poll: function() {
-    Pet.findOne({}).then(function(pet) {
-    var name = pet.name;
-    var level = pet.level;
+  poll: function(user) {
+    var Pet = require('../data/database.js').Pet;
+    var postLog = require('./controller').postLog;
+    console.log('id', user);
+    Pet.findOne({ where: {userId: user}}).then(function(pet) {
+      var name = pet.name;
+      var level = pet.level;
       switch (pet.status) {
-        case 'coding':
-          pet.experience++;
+      case 'coding':
+        pet.experience++;
+        pet.feed--;
+        pet.health--;
+        postLog(name, 'coding');
+        break;
+      case 'eating':
+        pet.feed += 2;
+        pet.health += 2;
+        postLog(name, 'eating');
+        break;
+      case 'playing':
+        pet.health++;
+        pet.love++;
+        pet.feed--;
+        postLog(name, 'playing');
+        break;
+      case 'sleeping':
+        pet.health++;
+        pet.experience++;
+        pet.feed--;
+        postLog(name, 'sleeping');
+        break;
+      default:
+        if (pet.feed > 0) {
           pet.feed--;
+        }
+        if (pet.health > 0) {
           pet.health--;
-          postLog(name, 'coding');
-          break;
-        case 'eating':
-          pet.feed+=2;
-          pet.health+=2;
-          postLog(name, 'eating');
-          break;
-        case 'playing':
-          pet.health++;
-          pet.love++;
-          pet.feed--;
-          postLog(name, 'playing');
-          break;
-        case 'sleeping':
-          pet.health++;
-          pet.experience++;
-          pet.feed--;
-          postLog(name, 'sleeping');
-          break;
-        default:
-          if (pet.feed > 0) {
-          pet.feed--;
-          }
-          if (pet.health > 0) {
-          pet.health--;
-          }
-          if (pet.love > 0) {
+        }
+        if (pet.love > 0) {
           pet.love--;
-          }
-          break;
+        }
+        break;
       }
       //if dead, run only this
       if (pet.health <= 0 || pet.feed <= 0) {
@@ -140,4 +143,4 @@ module.exports = {
       }
     });
   }
-}
+};

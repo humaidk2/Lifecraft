@@ -25,7 +25,7 @@ var app = express();
 
 //use bodyparser middleware
 app.use(express.static(__dirname + '/public'));
-app.use(bodyParser.urlencoded({'extended':false}));
+app.use(bodyParser.urlencoded({'extended': false}));
 app.use(bodyParser.json()); 
 app.use(cors());
 
@@ -46,7 +46,7 @@ app.post('/api/pet', controller.post);
 app.post('/api/newPet', controller.new);
 app.get('/api/test', function(req, res) {
   console.log('Testing polling function...');
-  poll();
+  poll(req.session.user.userId);
   res.end();
 });
 
@@ -54,6 +54,7 @@ app.get('/api/test', function(req, res) {
 app.get('/logout', controller.logout);
 app.post('/login', controller.login);
 app.post('/signup', controller.signup);
+//app.post('/findpets', controller.findpets);
 
 //index route
 app.get('/*', function(req, res) {
@@ -61,7 +62,7 @@ app.get('/*', function(req, res) {
 });
 
 // Uncomment to poll database reguarly
-setInterval(poll, 5000);
+//setInterval(poll.bind(this, controller.user), 5000);
 
 app.listen(3000);
 console.log('Server listening on 3000...');
