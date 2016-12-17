@@ -9,6 +9,7 @@ import {
   Dimensions,
   DeviceEventEmitter,
   Animated,
+  Vibration,
   Button,
   TouchableHighlight,
 } from 'react-native';
@@ -127,6 +128,7 @@ export default class cookingChallenge extends Component {
 
     that.state.pan.play();
     that.state.pan.setVolume(1.0);
+    Vibration.vibrate([0, 500]);
 
     if (updatedProgress >= 1) {
       that.state.sizzle.stop();
