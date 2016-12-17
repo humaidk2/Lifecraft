@@ -145,7 +145,7 @@ export default class cookingChallenge extends Component {
             <Progress.Bar progress={this.state.progressPercent} color={'red'} width={Dimensions.get('window').width * 0.9} height={30} style={styles.progressBar}/>
           </View>
           <View style={styles.inputContainer}>
-            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.triggerCooking.bind(this)}>
+            <TouchableHighlight underlayColor={'transparent'} style={[styles.tapCircle, {backgroundColor: this.state.buttonColor}]} onPress={this.gameStart.bind(this)}>
               <Text style={styles.tapCircleText}>{this.state.buttonText}</Text>
             </TouchableHighlight>
           </View>
