@@ -1,7 +1,7 @@
 var Sequelize = require('sequelize');
 
 // NOTE: create 'hrgotchi' database before running
-var db = new Sequelize('hrgotchi', 'root', '', {
+var db = new Sequelize('hrgotchi', 'root', 'UZUmaki1995,./', {
   host: 'localhost',
   dialect: 'mysql',
   logging: false
@@ -9,12 +9,16 @@ var db = new Sequelize('hrgotchi', 'root', '', {
 
 //user schema
 var User = db.define('Users', {
+  userId: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
   username: {type: Sequelize.STRING, unique: true},
   password: Sequelize.STRING,
+  //petId: {type: Sequelize.INTEGER, references: {model: Pet, key: 'petId'}}
 }, {timestamps: false});
 
 //pet schema
 var Pet = db.define('Pets', {
+  petId: {type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true},
+  userId: {type: Sequelize.INTEGER, references: {model: User, key: 'userId'}},
   name: {type: Sequelize.STRING, allowNull: false, unique: true},
   status: {type: Sequelize.STRING, defaultValue: 'normal'},
   feed: {type: Sequelize.INTEGER, defaultValue: 5},
@@ -35,15 +39,21 @@ var Log = db.define('Logs', {
   updatedAt: {type: Sequelize.DATE, allowNull: false, defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')},
 });
 
+
+// Add any realtions
+// User.hasOne(Pet, { foreignKey: 'petId' });
+// Pet.hasOne(User, { foreignKey: 'userId' });
+
 //creates any missing tables
 //pass in {force: true} to clear tables
 User.sync();
 Pet.sync();
 Log.sync();
 
+
 module.exports = {
   User: User,
   Pet: Pet,
   Log: Log,
   db: db
-} 
+};
