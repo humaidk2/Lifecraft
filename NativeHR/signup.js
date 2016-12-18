@@ -41,9 +41,9 @@ export default class SignUp extends Component {
 
   handleSubmit() {
     //e.preventDefault();
-    
+
     var that = this;
-    fetch('http://10.6.19.73:3000/signup', {
+    fetch('http://138.68.6.148:3000/signup', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -56,7 +56,7 @@ export default class SignUp extends Component {
       // if data = true, user is found and route to home. if false, stay on login page
       console.log('data', data);
       if (data.user) {
-        fetch('http://10.6.19.73:3000/api/newPet', {
+        fetch('http://138.68.6.148:3000/api/newPet', {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
