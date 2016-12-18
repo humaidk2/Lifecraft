@@ -126,9 +126,9 @@ export default class cookingChallenge extends Component {
       buttonColor: 'orange'
     });
     this.startTime = new Date();
+    this.state.sizzle.setVolume(0.7);
     this.state.sizzle.play();
     this.state.sizzle.setNumberOfLoops(-1);
-    this.state.sizzle.setVolume(0.7);
   }
 
   triggerCooking() {

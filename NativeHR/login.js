@@ -25,7 +25,20 @@ import {Actions} from 'react-native-router-flux';
 import NativeHR2 from './NativeHR2.js';
 import cookingChallenge from './cookingChallenge.js';
 
-
+const styles = StyleSheet.create({
+  button: {
+    margin: 10,
+  },
+  titleContainer: {
+    height: 200,
+    justifyContent: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 42,
+  },
+});
 
 export default class Login extends Component {
   constructor(props) {
@@ -56,11 +69,8 @@ export default class Login extends Component {
     })
     .then((response) => response.json())
     .then((data) => {
-      // if data = true, user is found and route to home. if false, stay on login page
       console.log('data', data);
       if (data.user) {
-        //browserHistory.currentUser = that.state.username;
-        //that.props.router.push({pathname: '/home'});
         Actions.NativeHR2({type: 'reset'});
       } else {
         console.log('not a valid user');
@@ -96,13 +106,22 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View className='signin-box container'>
-        <Text className='form-signin-header'>HR50 Sign In</Text>
-        <TextInput onChangeText={(text) => this.handleUserChange(text)} id='username' className='form-control' placeholder='Enter username'></TextInput>
-        <TextInput onChangeText={(text) => this.handlePasswordChange(text)} secureTextEntry={true} id='password' className='form-control' placeholder='Enter password'></TextInput>
-        <CheckBox label='Remember Me' checked={this.state.checked} onChange={this.handleCheck.bind(this)}/>
-        <Button onPress={this.handleSubmit} className='btn btn-large btn-primary btn-block' title='Submit'></Button>
-        <Button onPress={this.handleSignUp} title='Signup'></Button>
+      <View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Sign In</Text>
+        </View>
+        <View style={styles.button}>
+          <TextInput onChangeText={(text) => this.handleUserChange(text)} id='username' className='form-control' placeholder='Enter username'></TextInput>
+        </View>
+        <View style={styles.button}>
+          <TextInput onChangeText={(text) => this.handlePasswordChange(text)} secureTextEntry={true} id='password' className='form-control' placeholder='Enter password'></TextInput>
+        </View>
+        <View style={styles.button}>
+          <Button onPress={this.handleSubmit} title='Login'></Button>
+        </View>
+        <View style={styles.button}>
+          <Button onPress={this.handleSignUp} title='Signup'></Button>
+        </View>
       </View>
     );
   }

@@ -25,6 +25,21 @@ import {Actions} from 'react-native-router-flux';
 import NativeHR2 from './NativeHR2.js';
 import cookingChallenge from './cookingChallenge.js';
 
+const styles = StyleSheet.create({
+  button: {
+    margin: 10,
+  },
+  titleContainer: {
+    height: 200,
+    justifyContent: 'center',
+  },
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 42,
+  },
+});
+
 export default class SignUp extends Component {
   constructor(props) {
     super(props);
@@ -41,8 +56,6 @@ export default class SignUp extends Component {
   }
 
   handleSubmit() {
-    //e.preventDefault();
-
     var that = this;
     fetch('http://138.68.6.148:3000/signup', {
       method: 'POST',
@@ -111,12 +124,25 @@ export default class SignUp extends Component {
 
   render() {
     return (
-      <View className='signup-box container'>
-        <Text className='form-signin-header'>HR50 Sign Up</Text>
-        <TextInput onChangeText={(text) => this.handleUserChange(text)} placeholder='Enter username'></TextInput>
-        <TextInput onChangeText={(text) => this.handlePasswordChange(text)} secureTextEntry={true} placeholder='Enter password'></TextInput>
-        <Button onPress={this.handleSubmit} title='Submit'></Button>
-        <Button onPress={this.handleLogin} title='Login'></Button>
+      <View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Sign Up</Text>
+        </View>
+        <View style={styles.button}>
+          <TextInput onChangeText={(text) => this.handleUserChange(text)} placeholder='Enter username'></TextInput>
+        </View>
+        <View style={styles.button}>
+          <TextInput onChangeText={(text) => this.handlePasswordChange(text)} secureTextEntry={true} placeholder='Enter password'></TextInput>
+        </View>
+        <View style={styles.button}>
+          <TextInput onChangeText={(text) => this.handlePetNameChange(text)} placeholder='Enter Pet Name'></TextInput>
+        </View>
+        <View style={styles.button}>
+          <Button onPress={this.handleSubmit} title='Submit'></Button>
+        </View>
+        <View style={styles.button}>
+          <Button onPress={this.handleLogin} title='Login'></Button>
+        </View>
       </View>
     );
   }

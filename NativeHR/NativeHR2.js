@@ -8,6 +8,7 @@ import {
   Button,
   Image,
   Dimensions,
+  BackAndroid,
   DeviceEventEmitter,
   Animated,
 } from 'react-native';
@@ -42,10 +43,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
-  logout: {
-    width: 100,
-    marginTop: 20,
+  logoutContainer: {
+    position: 'absolute',
     textAlign: 'center',
+    top: 0,
+    right: 0,
+  },
+  logout: {
+    zIndex: 999,
+    height: 30,
+    width: 60,
   },
   statusText: {
     color: 'red',
@@ -135,6 +142,7 @@ export default class NativeHR2 extends Component {
   }
 
   componentDidMount() {
+    BackAndroid.addEventListener('hardwareBackPress', () => true);
         // Import the react-native-sound module
     var that = this;
     that.state.sound = new Sound('dead.mp3', Sound.MAIN_BUNDLE, (e) => {
@@ -172,15 +180,15 @@ export default class NativeHR2 extends Component {
       }
       //Cook
       // console.log(Math.abs(data.y), Math.abs(data.z));
-      if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
-        // console.log('cooking');
-        var eating = {'status': 'eating'};
-        var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
-      }
+      // if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
+      //   // console.log('cooking');
+      //   var eating = {'status': 'eating'};
+      //   var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
+      //   window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
+      // }
     });
 
-//     mSensorManager.startAccelerometer(100);
+    mSensorManager.startAccelerometer(100);
 //     mSensorManager.startLightSensor(100);
 
 //     DeviceEventEmitter.addListener('StepCounter', function (data) {
@@ -418,7 +426,7 @@ export default class NativeHR2 extends Component {
 
   render() {
     var color = this.state.light.interpolate({
-      inputRange: [0, 40],
+      inputRange: [0, 10],
       outputRange: ['rgba(0,0,0,0.5)', 'rgba(0,0,0,0)']
     });
 
@@ -430,6 +438,9 @@ export default class NativeHR2 extends Component {
               <Image source={{uri: this.state.img}} style={styles.petGif}>
                 <View style={styles.infoContainer}>
                   <Info info={this.state}/>
+                </View>
+                <View style={styles.logoutContainer}>
+                  <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
                 </View>
               </Image>
               <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
