@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  Button,
   Image,
   Dimensions,
   DeviceEventEmitter,
@@ -38,6 +39,11 @@ const styles = StyleSheet.create({
   statusMsg: {
     fontWeight: 'bold',
     fontSize: 20,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  logout: {
+    width: 100,
     marginTop: 20,
     textAlign: 'center',
   },
@@ -100,7 +106,7 @@ export default class NativeHR2 extends Component {
     };
 
     var that = this;
-    setInterval(function() {
+    this.interval = setInterval(function() {
       if (that.state.status !== 'dead') {
         that.getCurrent();
         that.getLog();
@@ -110,22 +116,22 @@ export default class NativeHR2 extends Component {
     window.sensorHandler = (status, link, obj) => {
       if (status) {
         fetch(link, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-          })
-          .then((response) => response)
-          .then((data) => {
-            that.getCurrent();
-          })
-          .catch((error) => {
-            console.warn(error);
-          }).done();
-        }
-      };
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(obj)
+        })
+        .then((response) => response)
+        .then((data) => {
+          that.getCurrent();
+        })
+        .catch((error) => {
+          console.warn(error);
+        }).done();
+      }
+    };
   }
 
   componentDidMount() {
@@ -152,7 +158,7 @@ export default class NativeHR2 extends Component {
       if (data.light <= 5) {
         var sleeping = {'status': 'sleeping'};
         var condition = (that.state.status !== 'sleeping' && that.state.status !== 'dead');
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', sleeping);
+        window.sensorHandler(condition, 'http://10.6.19.73:3000/api/pet', sleeping);
       }
     });
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
@@ -161,7 +167,7 @@ export default class NativeHR2 extends Component {
         // console.log(data.x);
         var name = {'name': that.state.name};
         var dead = (that.state.status === 'dead');
-        window.sensorHandler(dead, 'http://138.68.6.148:3000/api/newPet', name);
+        window.sensorHandler(dead, 'http://10.6.19.73:3000/api/newPet', name);
       }
       //Cook
       // console.log(Math.abs(data.y), Math.abs(data.z));
@@ -169,7 +175,7 @@ export default class NativeHR2 extends Component {
         // console.log('cooking');
         var eating = {'status': 'eating'};
         var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
+        window.sensorHandler(condition, 'http://10.6.19.73:3000/api/pet', eating);
       }
     });
     DeviceEventEmitter.addListener('StepCounter', function (data) {
@@ -188,7 +194,7 @@ export default class NativeHR2 extends Component {
     //console.log('Fetching pet status...');
     var that = this;
 
-    fetch('http://138.68.6.148:3000/api/pet', {
+    fetch('http://10.6.19.73:3000/api/pet', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -233,7 +239,7 @@ export default class NativeHR2 extends Component {
   getLog() {
     var that = this;
 
-    fetch('http://138.68.6.148:3000/log', {
+    fetch('http://10.6.19.73:3000/log', {
       method: 'GET',
       headers: {
         'Accept': 'application/json',
@@ -254,7 +260,7 @@ export default class NativeHR2 extends Component {
   setStatus(status) {
     var that = this;
 
-    fetch('http://138.68.6.148:3000/api/pet', {
+    fetch('http://10.6.19.73:3000/api/pet', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -298,7 +304,7 @@ export default class NativeHR2 extends Component {
 
   newPet(e) {
     var that = this;
-    fetch('http://138.68.6.148:3000/api/newPet', {
+    fetch('http://10.6.19.73:3000/api/newPet', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -353,7 +359,7 @@ export default class NativeHR2 extends Component {
         isQuestion: !this.state.isQuestion
       });
       var sleeping = {'status': 'coding'};
-      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
+      window.sensorHandler(true, 'http://10.6.19.73:3000/api/pet', sleeping);
       Actions.pop();
     }
   }
@@ -374,7 +380,24 @@ export default class NativeHR2 extends Component {
     }
     return arr;
   }
-
+  logout () {
+    var that = this;
+    fetch('http://10.6.19.73:3000/logout', {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      }
+    })
+    .then((response) => response)
+    .then((data) => {
+      clearInterval(this.interval);
+      Actions.Login({type: 'reset'});
+    })
+    .catch((error) => {
+      console.warn(error);
+    }).done();
+  }
   QuestionPage() {
     var that = this;
 
@@ -389,7 +412,7 @@ export default class NativeHR2 extends Component {
         answer: data.results[0].correct_answer,
         choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
       });
-                Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices})
+      Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices});
     })
     .catch((error) => {
       console.warn(error);
@@ -414,6 +437,7 @@ export default class NativeHR2 extends Component {
                 </View>
               </Image>
               <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
+              <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
             </View>
             <View style={styles.statusContainer}>
               <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
