@@ -123,19 +123,19 @@ export default class quizChallenge extends Component {
         button: null,
         choices: allChoices,
         choice0: 
-          <TouchableHighlight overlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 0)}>
+          <TouchableHighlight underlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 0)}>
             <Text style={styles.choiceText}>{allChoices[0]}</Text>
           </TouchableHighlight>,
         choice1:
-          <TouchableHighlight overlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 1)}>
+          <TouchableHighlight underlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 1)}>
             <Text style={styles.choiceText}>{allChoices[1]}</Text>
           </TouchableHighlight>,
         choice2:
-          <TouchableHighlight overlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 2)}>
+          <TouchableHighlight underlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 2)}>
             <Text style={styles.choiceText}>{allChoices[2]}</Text>
           </TouchableHighlight>,
         choice3:
-          <TouchableHighlight overlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 3)}>
+          <TouchableHighlight underlayColor={'transparent'} style={styles.choiceContainer} onPress={that.checkAnswer.bind(this, 3)}>
             <Text style={styles.choiceText}>{allChoices[3]}</Text>
           </TouchableHighlight>,
       });
