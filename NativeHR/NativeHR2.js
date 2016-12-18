@@ -147,6 +147,7 @@ export default class NativeHR2 extends Component {
       }
     });
     that.state.sound.stop();
+
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
         that.state.light,
@@ -178,11 +179,16 @@ export default class NativeHR2 extends Component {
         window.sensorHandler(condition, 'http://10.6.19.73:3000/api/pet', eating);
       }
     });
-    DeviceEventEmitter.addListener('StepCounter', function (data) {
-    });
+
+//     mSensorManager.startAccelerometer(100);
+//     mSensorManager.startLightSensor(100);
+
+//     DeviceEventEmitter.addListener('StepCounter', function (data) {
+//     });
     // mSensorManager.startStepCounter(1000);
-    mSensorManager.startAccelerometer(100);
+    // mSensorManager.startAccelerometer(100);
     mSensorManager.startLightSensor(100);
+
   }
 
   componentWillMount() {
@@ -285,17 +291,6 @@ export default class NativeHR2 extends Component {
     this.setState(obj);
   }
 
-  escapeHtml(text) {
-    var map = {
-      '&': 'amp;',
-      '<': 'lt;',
-      '>': 'gt;',
-      '"': 'quot;',
-      "'": '#039;'
-    };
-    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-  }
-
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -352,7 +347,6 @@ export default class NativeHR2 extends Component {
         code: 'code1'
       }});
     }
-  }
   checkAnswer(choice) {
     if (choice === this.state.answer) {
       this.setState({
@@ -364,11 +358,13 @@ export default class NativeHR2 extends Component {
     }
   }
 
+
   executeCommand(command) {
     this.changeCommandIcon(command);
     this.setStatus(command);
     this.getCurrent();
   }
+
 
   randomizer(arr, answer) {
     arr.push(answer);
@@ -419,7 +415,6 @@ export default class NativeHR2 extends Component {
     }).done();
   }
 
-
   render() {
     var color = this.state.light.interpolate({
       inputRange: [0, 40],
@@ -452,7 +447,7 @@ export default class NativeHR2 extends Component {
           </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
-            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} getQuestion={this.QuestionPage.bind(this)}/>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
       </Animated.View>
