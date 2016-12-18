@@ -42,10 +42,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
-  logout: {
-    width: 100,
-    marginTop: 20,
+  logoutContainer: {
+    position: 'absolute',
     textAlign: 'center',
+    top: 0,
+    right: 0,
+  },
+  logout: {
+    zIndex: 999,
+    height: 30,
+    width: 60,
   },
   statusText: {
     color: 'red',
@@ -431,9 +437,11 @@ export default class NativeHR2 extends Component {
                 <View style={styles.infoContainer}>
                   <Info info={this.state}/>
                 </View>
+                <View style={styles.logoutContainer}>
+                  <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
+                </View>
               </Image>
               <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
-              <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
             </View>
             <View style={styles.statusContainer}>
               <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
