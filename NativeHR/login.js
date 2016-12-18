@@ -39,14 +39,14 @@ export default class Login extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUserChange = this.handleUserChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this); 
-    
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+
   }
 
 
   handleSubmit() {
     var that = this;
-    fetch('http://10.6.19.73:3000/login', {
+    fetch('http://138.68.6.148:3000/login', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
