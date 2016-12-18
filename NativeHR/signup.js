@@ -32,11 +32,12 @@ export default class SignUp extends Component {
       username: '',
       password: '',
       checked: false,
-      petName: ''
+      petName: 'anonymous'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUserChange = this.handleUserChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handlePetNameChange = this.handlePetNameChange.bind(this);
   }
 
   handleSubmit() {
