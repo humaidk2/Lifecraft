@@ -25,12 +25,16 @@ const styles = StyleSheet.create({
 });
 
 const moveSet = ['jump', 'duck', 'run'];
-
+var timer = 20;
+var jumpSound = new Sound('jump.mp3', Sound.MAIN_BUNDLE, (e) => {});
+var runSound = new Sound('run.mp3', Sound.MAIN_BUNDLE, (e) => {});
+var duckSound = new Sound('duck.mp3', Sound.MAIN_BUNDLE, (e) => {});
 var mSensorManager = require('NativeModules').SensorManager;
+
 var randMove = function() {
   return moveSet[Math.floor(Math.random() * moveSet.length)];
 };
-var timer = 20;
+
 export default class exerciseChallenge extends Component {
   constructor(props) {
     super(props);
@@ -55,6 +59,8 @@ export default class exerciseChallenge extends Component {
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
       if (data.z >= 25 && that.state.status === 'start' && that.state.mode === 'jump') {
         console.log('Jump', data.z);
+        jumpSound.setVolume(1);
+        jumpSound.play();
         that.setState({
           jumps: that.state.jumps + 1,
           points: that.state.points + 2
@@ -62,6 +68,8 @@ export default class exerciseChallenge extends Component {
       }
       if (data.z <= -2 && that.state.status === 'start' && that.state.mode === 'duck') {
         console.log('Duck', data.z);
+        duckSound.setVolume(1);
+        duckSound.play();
         that.setState({
           ducks: that.state.ducks + 1,
           points: that.state.points + 2
@@ -71,6 +79,8 @@ export default class exerciseChallenge extends Component {
 
     DeviceEventEmitter.addListener('StepCounter', function (data) {
       if (that.state.status === 'start' && that.state.mode === 'run') {
+        runSound.setVolume(1);
+        runSound.play();
         that.setState({
           steps: that.state.steps + 2,
           points: that.state.points + 1.5,
