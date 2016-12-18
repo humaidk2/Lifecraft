@@ -47,11 +47,12 @@ export default class SignUp extends Component {
       username: '',
       password: '',
       checked: false,
-      petName: ''
+      petName: 'anonymous'
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleUserChange = this.handleUserChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handlePetNameChange = this.handlePetNameChange.bind(this);
   }
 
   handleSubmit() {
@@ -64,26 +65,31 @@ export default class SignUp extends Component {
       },
       body: JSON.stringify({username: that.state.username, password: that.state.password})
     })
-    .then((response) => response.json())
+    .then((response) => response)
     .then((data) => {
+          Actions.NativeHR2({type: 'reset'});
+      // if data = true, user is found and route to home. if false, stay on login page
       console.log('data', data);
       if (data.user) {
-        fetch('http://138.68.6.148:3000/api/newPet', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({name: that.state.petName})
-        })
-        .then((response) => response)
-        .then((data) => {
-          console.log('data', data);
-          Actions.NativeHR2({type: 'reset'});
-        })
-        .catch((error) => {
-          console.warn(error);
-        }).done();
+        // fetch('http://138.68.6.148:3000/api/newPet', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Accept': 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   body: JSON.stringify({name: that.state.petName})
+        // })
+        // .then((response) => response)
+        // .then((data) => {
+        //   // if data = true, user is found and route to home. if false, stay on login page
+        //   console.log('data', data);
+        // })
+        // .catch((error) => {
+        //   console.warn(error);
+        // }).done();
+        //browserHistory.currentUser = that.state.username;
+        //that.props.router.push({pathname: '/home'});
+        Actions.NativeHR2({type: 'reset'});
       } else {
         console.log('not a valid user');
         Actions.Login({type: 'reset'});

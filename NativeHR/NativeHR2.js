@@ -465,3 +465,6 @@ export default class NativeHR2 extends Component {
     );
   }
 }
+
+// Logout button
+// <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
