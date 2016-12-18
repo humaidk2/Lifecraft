@@ -106,7 +106,7 @@ export default class NativeHR2 extends Component {
     };
 
     var that = this;
-    this.interval = setInterval(function() {
+    window.interval = setInterval(function() {
       if (that.state.status !== 'dead') {
         that.getCurrent();
         that.getLog();
@@ -388,7 +388,7 @@ export default class NativeHR2 extends Component {
     })
     .then((response) => response)
     .then((data) => {
-      clearInterval(this.interval);
+      clearInterval(window.interval);
       Actions.Login({type: 'reset'});
     })
     .catch((error) => {

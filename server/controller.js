@@ -44,6 +44,7 @@ module.exports = {
     console.log('id', req.session.user.userId);
     Pet.findOne({ where: {userId: req.session.user.userId}})
       .then(function(query) {
+        console.log('query.dataValues', query.dataValues);
         console.log('pet', query.dataValues.name);
         var pet = query.dataValues;
         res.statusCode = 200;
@@ -198,7 +199,7 @@ module.exports = {
   //         console.log('user', user.dataValues.userId);
   //         Pet.find({ where: {userId: user.dataValues.userId} })
   //           .then(function(pet) {
-  //             if (!pet) { 
+  //             if (!pet) {
   //             } else {
   //               console.log('pet', pet);
   //               res.send({pet: pet, user: user});
