@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 28,
+    margin: 10,
   },
   choicesContainer: {
     backgroundColor: 'rgb(155, 245, 250)',
@@ -44,6 +45,7 @@ const styles = StyleSheet.create({
     color: 'black',
     textAlign: 'center',
     fontSize: 30,
+    marginTop: 10,
   },
 });
 
@@ -54,7 +56,7 @@ var Question = (props) => {
         <Text style={styles.question}>{props.question}</Text>
       </View>
       <View style={styles.choicesContainer}>
-        {props.choices.map((choice, index) => (<TouchableHighlight key={index + ''} onPress={props.checkAnswer.bind(this, choice)} underlayColor={'rgb(250, 140, 140)'} style={styles.choiceContainer}><Text onPress={props.checkAnswer.bind(this, choice)} style={styles.choices} key={'' + index}>{choice}</Text></TouchableHighlight>))}
+        {props.choices.map((choice, index) => (<TouchableHighlight key={index + ''} underlayColor={'rgb(250, 140, 140)'} style={styles.choiceContainer}><Text onPress={props.checkAnswer.bind(this, choice)} style={styles.choices} key={'' + index}>{choice}</Text></TouchableHighlight>))}
       </View>
     </View>
   );

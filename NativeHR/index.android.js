@@ -22,6 +22,9 @@ import Petlist from './petlist.js';
 import {Scene, Router} from 'react-native-router-flux';
 import NativeHR2 from './NativeHR2.js';
 import cookingChallenge from './cookingChallenge.js';
+import exerciseChallenge from './exerciseChallenge.js';
+import sleepingChallenge from './sleepingChallenge.js';
+import quizChallenge from './quizChallenge.js';
 
 const refreshOnBack = () => { Actions.pop(); Actions.refresh(); };
 export default class NativeHR extends Component {
@@ -34,12 +37,14 @@ export default class NativeHR extends Component {
     return (
       <Router hideNavBar={true}>
         <Scene key="root">
-          <Scene key="NativeHR2" component={NativeHR2} title="Home"/>
-          <Scene key="petBox" component={PetBox} title="Register"/>
-          <Scene key="Login" initial={true} component={Login} title="Login" />
-          <Scene key="Signup" component={Signup} title="Signup" />
-          <Scene key="question" component={Question} onBack={refreshOnBack} title="Question" duration={0}/>
-          <Scene key="cookingChallenge" component={cookingChallenge} title="cookingChallenge" duration={0}/>
+          <Scene key="NativeHR2" initial={true} component={NativeHR2} title="Home"/>
+               <Scene key="petBox" component={PetBox} title="Register"/>
+              <Scene key="Login" initial={true} component={Login} title="Login" />
+              <Scene key="Signup" component={Signup} title="Signup" />
+              <Scene key="quizChallenge" component={quizChallenge} title="quizChallenge" duration={0}/>
+              <Scene key="cookingChallenge" component={cookingChallenge} title="cookingChallenge" duration={0}/>
+              <Scene key="exerciseChallenge" component={exerciseChallenge} title="exerciseChallenge" duration={0}/>
+              <Scene key="sleepingChallenge" component={sleepingChallenge} title="sleepingChallenge" duration={0}/>
           </Scene>
       </Router>
     );

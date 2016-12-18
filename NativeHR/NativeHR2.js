@@ -110,22 +110,22 @@ export default class NativeHR2 extends Component {
     window.sensorHandler = (status, link, obj) => {
       if (status) {
         fetch(link, {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(obj)
-          })
-          .then((response) => response)
-          .then((data) => {
-            that.getCurrent();
-          })
-          .catch((error) => {
-            console.warn(error);
-          }).done();
-        }
-      };
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(obj)
+        })
+        .then((response) => response)
+        .then((data) => {
+          that.getCurrent();
+        })
+        .catch((error) => {
+          console.warn(error);
+        }).done();
+      }
+    };
   }
 
   componentDidMount() {
@@ -141,6 +141,7 @@ export default class NativeHR2 extends Component {
       }
     });
     that.state.sound.stop();
+
     DeviceEventEmitter.addListener('LightSensor', function (data) {
       Animated.spring(
         that.state.light,
@@ -169,14 +170,18 @@ export default class NativeHR2 extends Component {
         // console.log('cooking');
         var eating = {'status': 'eating'};
         var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
-        window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
       }
     });
-    DeviceEventEmitter.addListener('StepCounter', function (data) {
-    });
+
+//     mSensorManager.startAccelerometer(100);
+//     mSensorManager.startLightSensor(100);
+
+//     DeviceEventEmitter.addListener('StepCounter', function (data) {
+//     });
     // mSensorManager.startStepCounter(1000);
-    mSensorManager.startAccelerometer(100);
+    // mSensorManager.startAccelerometer(100);
     mSensorManager.startLightSensor(100);
+
   }
 
   componentWillMount() {
@@ -279,17 +284,6 @@ export default class NativeHR2 extends Component {
     this.setState(obj);
   }
 
-  escapeHtml(text) {
-    var map = {
-      '&': 'amp;',
-      '<': 'lt;',
-      '>': 'gt;',
-      '"': 'quot;',
-      "'": '#039;'
-    };
-    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-  }
-
   showNameInput() {
     this.setState({
       showNewName: !this.showNewName
@@ -347,55 +341,12 @@ export default class NativeHR2 extends Component {
       }});
     }
   }
-  checkAnswer(choice) {
-    if (choice === this.state.answer) {
-      this.setState({
-        isQuestion: !this.state.isQuestion
-      });
-      var sleeping = {'status': 'coding'};
-      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
-      Actions.pop();
-    }
-  }
 
   executeCommand(command) {
     this.changeCommandIcon(command);
     this.setStatus(command);
     this.getCurrent();
   }
-
-  randomizer(arr, answer) {
-    arr.push(answer);
-    for (var i = 0; i < arr.length; i++) {
-      var temp = Math.floor(Math.random() * arr.length);
-      var swap = arr[temp];
-      arr[temp] = arr[i];
-      arr[i] = swap;
-    }
-    return arr;
-  }
-
-  QuestionPage() {
-    var that = this;
-
-    fetch('https://www.opentdb.com/api.php?amount=1&type=multiple', {
-      method: 'GET',
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      that.setState({
-        isQuestion: !this.state.isQuestion,
-        question: data.results[0].question,
-        answer: data.results[0].correct_answer,
-        choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
-      });
-                Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices})
-    })
-    .catch((error) => {
-      console.warn(error);
-    }).done();
-  }
-
 
   render() {
     var color = this.state.light.interpolate({
@@ -428,7 +379,7 @@ export default class NativeHR2 extends Component {
           </View>
         <View style={styles.actionContainer}>{
           this.state.status !== 'dead' ? (<View style={{flex: 1}}>
-            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)} getQuestion={this.QuestionPage.bind(this)}/>
+            <Buttons cmdImg={this.state.cmdImg} executeCommand={this.executeCommand.bind(this)}/>
           </View>) : <Restart showNameInput={this.showNameInput.bind(this)} showNewName={this.state.showNewName} getInput={this.getInput.bind(this)} newPet={this.newPet.bind(this)}></Restart>
         }</View>
       </Animated.View>
