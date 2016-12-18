@@ -39,7 +39,7 @@ export default class NativeHR extends Component {
         <Scene key="root">
           <Scene key="NativeHR2" initial={true} component={NativeHR2} title="Home"/>
                <Scene key="petBox" component={PetBox} title="Register"/>
-              <Scene key="Login" initial={true} component={Login} title="Login" />
+              <Scene key="Login" component={Login} title="Login" />
               <Scene key="Signup" component={Signup} title="Signup" />
               <Scene key="quizChallenge" component={quizChallenge} title="quizChallenge" duration={0}/>
               <Scene key="cookingChallenge" component={cookingChallenge} title="cookingChallenge" duration={0}/>

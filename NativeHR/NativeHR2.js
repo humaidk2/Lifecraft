@@ -433,7 +433,6 @@ export default class NativeHR2 extends Component {
                 </View>
               </Image>
               <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
-              <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
             </View>
             <View style={styles.statusContainer}>
               <Text style={styles.statusMsg}>{this.state.name} is currently <Text style={styles.statusText}>{this.state.status}</Text>!</Text>
@@ -455,3 +454,6 @@ export default class NativeHR2 extends Component {
     );
   }
 }
+
+// Logout button
+// <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
