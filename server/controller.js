@@ -153,7 +153,7 @@ module.exports = {
                   User.create({username: username, password: hash}).then(function(user) {
                     console.log('Saved user.');
                     user = user.dataValues;
-                    res.send({user: user.username});
+                    res.send({user: 'wow'});
                   });
                 }
               });
