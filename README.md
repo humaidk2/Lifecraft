@@ -3,9 +3,9 @@ Live class pet for Hack Reactor.
 
 ## Team
 
-  - __Product Owner__: Emm
-  - __Scrum Master__: Lisa
-  - __Development Team Members__: Don, Lisa, Haris, Emm
+  - __Product Owner__: Dunstan
+  - __Scrum Master__: Humaid
+  - __Development Team Members__: Chris, Dunstan, Humaid, Jon
 
 ## Table of Contents
 
