@@ -7,24 +7,24 @@ var moment = require('moment');
 
 /********** Image Assets **********/
 var lvl1 = {
-  coding: "coding1",
-  sleeping: "sleeping1",
-  playing: "playing1",
-  eating: "eating1"
+  coding: 'coding1',
+  sleeping: 'sleeping1',
+  playing: 'playing1',
+  eating: 'eating1'
 };
 
 var lvl2 = {
-  coding: "coding2",
-  sleeping: "sleeping2",
-  playing: "playing2",
-  eating: "eating2"
+  coding: 'coding2',
+  sleeping: 'sleeping2',
+  playing: 'playing2',
+  eating: 'eating2'
 };
 
 var lvl3 = {
-  coding: "coding3",
-  sleeping: "coding3",
-  playing: "coding3",
-  eating: "coding3"
+  coding: 'coding3',
+  sleeping: 'coding3',
+  playing: 'coding3',
+  eating: 'coding3'
 };
 
 var urls = {
@@ -41,7 +41,7 @@ module.exports = {
         var pet = query.dataValues;
         res.statusCode = 200;
         res.json(pet);
-      })
+      });
   },
   post: function(req, res, next) {
     Pet.findOne({})
@@ -49,8 +49,8 @@ module.exports = {
         if (pet) {
           var newStatus = req.body.status;
           pet.status = newStatus;
-          console.log('url', urls['lvl'+ pet.level][newStatus]);
-          pet.img = urls['lvl'+ pet.level][newStatus];
+          console.log('url', urls['lvl' + pet.level][newStatus]);
+          pet.img = urls['lvl' + pet.level][newStatus];
           pet.save().then(function(data) {
             console.log('updated status');
             res.statusCode = 201;
@@ -68,7 +68,7 @@ module.exports = {
     Pet.create({ name: name })
       .then(function(pet) {
         console.log('Created new pet.');
-        res.send("success");
+        res.send('success');
       });
   },
   /********** Log Functions **********/
@@ -76,33 +76,33 @@ module.exports = {
     var petName = req.body.name;
     Log.findAll({})
       .then(function(queries) {
-        queries.length > 15 ? queries=queries.slice(queries.length - 15): null;
+        queries.length > 15 ? queries = queries.slice(queries.length - 15) : null;
         var logs = queries.map(function(query) {
           query.dataValues.createdAt = moment(query.dataValues.createdAt).fromNow();
-          return query.dataValues
-        })
+          return query.dataValues;
+        });
         res.statusCode = 200;
         res.json(logs.reverse());
-      })
+      });
   },
   postLog: function(name, action) {
     Log.findAll({
       limit: 1,
       order: [['createdAt', 'DESC']],
       where: {}
-    }).then(function(entry){
-      if(entry.length === 0){
+    }).then(function(entry) {
+      if (entry.length === 0) {
         Log.create({name: name, action: action})
         .then(function(log) {
           console.log('Created new log.');
         });
-      } else if(entry[0].dataValues.action !== 'dead'){
+      } else if (entry[0].dataValues.action !== 'dead') {
         Log.create({name: name, action: action})
         .then(function(log) {
           console.log('Created new log.');
         });
       }
-    })
+    });
   },
   /********** User Functions **********/
   login: function(req, res, next) {
@@ -110,29 +110,26 @@ module.exports = {
     var password = req.body.password;
 
     User.findOne({ where: {username: username} })
-      .then(function(user){
+      .then(function(user) {
         if (user) {
           user = user.dataValues;
           bcrypt.compare(password, user.password, function(err, match) {
             if (err) {
-              console.log('error')
+              console.log('error');
               throw err;
             } else if (match) {
               console.log('Login successful');
-              req.session.regenerate(function() {
-                req.session.user = user.username;
-                res.send({user: req.session.user});
-              });
+              res.send({user: req.session.user});
             } else {
               console.log('Wrong password.');
               res.send({user: req.session.user});
             }
-          })
+          });
         } else {
           console.log('Username not found.');
           res.send({user: req.session.user});
         }
-      })
+      });
   },
   logout: function(req, res, next) {
     req.session.destroy(function() {
@@ -156,15 +153,12 @@ module.exports = {
                   User.create({username: username, password: hash}).then(function(user) {
                     console.log('Saved user.');
                     user = user.dataValues;
-                    req.session.regenerate(function() {
-                      req.session.user = user.username;
-                      res.send({user: req.session.user});
-                    });
+                    res.send({user: user.username});
                   });
                 }
-              })
+              });
             }
-          })
+          });
         } else {
           console.log('Account already exists.');
           res.send(false);
