@@ -121,16 +121,16 @@ module.exports = {
               console.log('Login successful');
               req.session.regenerate(function() {
                 req.session.user = user.username;
-                res.send(req.session.user);
+                res.send({user: req.session.user});
               });
             } else {
               console.log('Wrong password.');
-              res.send(req.session.user);
+              res.send({user: req.session.user});
             }
           })
         } else {
           console.log('Username not found.');
-          res.send(req.session.user);
+          res.send({user: req.session.user});
         }
       })
   },
@@ -158,7 +158,7 @@ module.exports = {
                     user = user.dataValues;
                     req.session.regenerate(function() {
                       req.session.user = user.username;
-                      res.send(req.session.user);
+                      res.send({user: req.session.user});
                     });
                   });
                 }
