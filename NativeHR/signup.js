@@ -135,9 +135,6 @@ export default class SignUp extends Component {
           <TextInput onChangeText={(text) => this.handlePasswordChange(text)} secureTextEntry={true} placeholder='Enter password'></TextInput>
         </View>
         <View style={styles.button}>
-          <TextInput onChangeText={(text) => this.handlePetNameChange(text)} placeholder='Enter Pet Name'></TextInput>
-        </View>
-        <View style={styles.button}>
           <Button onPress={this.handleSubmit} title='Submit'></Button>
         </View>
         <View style={styles.button}>
