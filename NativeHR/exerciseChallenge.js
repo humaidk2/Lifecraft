@@ -149,7 +149,7 @@ export default class exerciseChallenge extends Component {
     BackAndroid.removeEventListener('hardwareBackPress', () => Actions.pop());
     BackAndroid.removeEventListener('hardwareBackPress', () => true);
     mSensorManager.stopStepCounter();
-    mSensorManager.stopAccelerometer();
+    //mSensorManager.stopAccelerometer();
     var that = this;
     console.log('window interval', window.interval);
     clearInterval(window.interval);

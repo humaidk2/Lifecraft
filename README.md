@@ -1,5 +1,5 @@
-# HRGotchi
-Live class pet for Hack Reactor.
+# LifeCraft
+YOUR LIFE IS IN YOUR HANDS
 
 ## Team
 
