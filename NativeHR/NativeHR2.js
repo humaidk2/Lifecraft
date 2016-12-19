@@ -170,7 +170,7 @@ export default class NativeHR2 extends Component {
     });
 
     mSensorManager.startAccelerometer(100);
-    // mSensorManager.startLightSensor(100);
+    mSensorManager.startLightSensor(100);
 
   }
 
