@@ -24,7 +24,7 @@ var Pet = db.define('Pets', {
   level: {type: Sequelize.INTEGER, defaultValue: 1},
   mood: {type: Sequelize.STRING, defaultValue: 'normal'},
   phys: {type: Sequelize.STRING, defaultValue: 'normal'},
-  img: {type: Sequelize.STRING, defaultValue: 'http://i.imgur.com/RzBy3Vw.gif'},
+  img: {type: Sequelize.STRING, defaultValue: 'http://quotesideas.com/wp-content/uploads/2015/07/Gif-minions-latest-images-2015.gif'},
 }, {timestamps: false});
 
 //log schema
