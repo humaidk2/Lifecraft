@@ -65,9 +65,9 @@ export default class SignUp extends Component {
       },
       body: JSON.stringify({username: that.state.username, password: that.state.password})
     })
-    .then((response) => response)
+    .then((response) => response.json())
     .then((data) => {
-          Actions.NativeHR2({type: 'reset'});
+          //Actions.NativeHR2({type: 'reset'});
       // if data = true, user is found and route to home. if false, stay on login page
       console.log('data', data);
       if (data.user) {

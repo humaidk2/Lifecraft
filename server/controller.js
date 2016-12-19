@@ -119,15 +119,15 @@ module.exports = {
               throw err;
             } else if (match) {
               console.log('Login successful');
-              res.send({user: req.session.user});
+              res.send({user: 'perfect'});
             } else {
               console.log('Wrong password.');
-              res.send({user: req.session.user});
+              res.send({});
             }
           });
         } else {
           console.log('Username not found.');
-          res.send({user: req.session.user});
+          res.send({});
         }
       });
   },
