@@ -43,17 +43,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: 'center',
   },
-  logoutContainer: {
-    position: 'absolute',
-    textAlign: 'center',
-    top: 0,
-    right: 0,
-  },
-  logout: {
-    zIndex: 999,
-    height: 30,
-    width: 60,
-  },
   statusText: {
     color: 'red',
   },
@@ -143,7 +132,7 @@ export default class NativeHR2 extends Component {
 
   componentDidMount() {
     BackAndroid.addEventListener('hardwareBackPress', () => true);
-        // Import the react-native-sound module
+    // Import the react-native-sound module
     var that = this;
     that.state.sound = new Sound('dead.mp3', Sound.MAIN_BUNDLE, (e) => {
       if (e) {
@@ -163,39 +152,25 @@ export default class NativeHR2 extends Component {
           toValue: data.light
         }
       ).start();
-      //Go to Sleep
+      // Go to Sleep
       if (data.light <= 5) {
         var sleeping = {'status': 'sleeping'};
         var condition = (that.state.status !== 'sleeping' && that.state.status !== 'dead');
         window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', sleeping);
       }
     });
+
     DeviceEventEmitter.addListener('Accelerometer', function (data) {
-      //Revive
+      // Revive
       if (data.x > 30) {
-        // console.log(data.x);
         var name = {'name': that.state.name};
         var dead = (that.state.status === 'dead');
         window.sensorHandler(dead, 'http://138.68.6.148:3000/api/newPet', name);
       }
-      //Cook
-      // console.log(Math.abs(data.y), Math.abs(data.z));
-      // if (Math.abs(data.y) > 10 && Math.abs(data.z) > 20) {
-      //   // console.log('cooking');
-      //   var eating = {'status': 'eating'};
-      //   var condition = (that.state.status !== 'eating' && that.state.status !== 'dead');
-      //   window.sensorHandler(condition, 'http://138.68.6.148:3000/api/pet', eating);
-      // }
     });
 
     mSensorManager.startAccelerometer(100);
-//     mSensorManager.startLightSensor(100);
-
-//     DeviceEventEmitter.addListener('StepCounter', function (data) {
-//     });
-    // mSensorManager.startStepCounter(1000);
-    // mSensorManager.startAccelerometer(100);
-    mSensorManager.startLightSensor(100);
+    // mSensorManager.startLightSensor(100);
 
   }
 
@@ -205,7 +180,6 @@ export default class NativeHR2 extends Component {
   }
 
   getCurrent() {
-    //console.log('Fetching pet status...');
     var that = this;
 
     fetch('http://138.68.6.148:3000/api/pet', {
@@ -324,7 +298,6 @@ export default class NativeHR2 extends Component {
     }).done();
   }
 
-
   changeCommandIcon (command) {
     if (command === 'eating') {
       this.setState({cmdImg: {
@@ -356,72 +329,11 @@ export default class NativeHR2 extends Component {
       }});
     }
   }
-  checkAnswer(choice) {
-    if (choice === this.state.answer) {
-      this.setState({
-        isQuestion: !this.state.isQuestion
-      });
-      var sleeping = {'status': 'coding'};
-      window.sensorHandler(true, 'http://138.68.6.148:3000/api/pet', sleeping);
-      Actions.pop();
-    }
-  }
-
 
   executeCommand(command) {
     this.changeCommandIcon(command);
     this.setStatus(command);
     this.getCurrent();
-  }
-
-
-  randomizer(arr, answer) {
-    arr.push(answer);
-    for (var i = 0; i < arr.length; i++) {
-      var temp = Math.floor(Math.random() * arr.length);
-      var swap = arr[temp];
-      arr[temp] = arr[i];
-      arr[i] = swap;
-    }
-    return arr;
-  }
-  logout () {
-    var that = this;
-    fetch('http://138.68.6.148:3000/logout', {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      }
-    })
-    .then((response) => response)
-    .then((data) => {
-      clearInterval(window.interval);
-      Actions.Login({type: 'reset'});
-    })
-    .catch((error) => {
-      console.warn(error);
-    }).done();
-  }
-  QuestionPage() {
-    var that = this;
-
-    fetch('https://www.opentdb.com/api.php?amount=1&type=multiple', {
-      method: 'GET',
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      that.setState({
-        isQuestion: !this.state.isQuestion,
-        question: data.results[0].question,
-        answer: data.results[0].correct_answer,
-        choices: that.randomizer(data.results[0].incorrect_answers, data.results[0].correct_answer),
-      });
-      Actions.question({question: that.state.question, answer: that.state.answer, checkAnswer: that.checkAnswer.bind(that), choices: that.state.choices});
-    })
-    .catch((error) => {
-      console.warn(error);
-    }).done();
   }
 
   render() {
@@ -438,9 +350,6 @@ export default class NativeHR2 extends Component {
               <Image source={{uri: this.state.img}} style={styles.petGif}>
                 <View style={styles.infoContainer}>
                   <Info info={this.state}/>
-                </View>
-                <View style={styles.logoutContainer}>
-                  <Button style={styles.logout} title={'logout'} onPress={this.logout.bind(this)}/>
                 </View>
               </Image>
               <Animated.View style={[styles.petGif, {position: 'absolute', backgroundColor: color}]}></Animated.View>
