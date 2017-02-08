@@ -1,5 +1,5 @@
 # LifeCraft
-YOUR LIFE IS IN YOUR HANDS
+Android pet simulation game that promotes exercise through mini-games.
 
 ## Team
 
